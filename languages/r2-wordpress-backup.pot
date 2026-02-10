@@ -216,3 +216,69 @@ msgstr ""
 
 msgid "Delete failed (HTTP %d)."
 msgstr ""
+
+msgid "Options and schedules have been reset."
+msgstr ""
+
+msgid "Backup deleted from R2."
+msgstr ""
+
+msgid "Reset plugin options and schedules? R2 credentials will be kept."
+msgstr ""
+
+msgid "Delete this backup from R2? This cannot be undone."
+msgstr ""
+
+msgid "Restore this site from the selected backup? Current database and files will be replaced. This cannot be undone."
+msgstr ""
+
+msgid "Starting backup…"
+msgstr ""
+
+msgid "Backup completed successfully."
+msgstr ""
+
+msgid "Backup failed."
+msgstr ""
+
+msgid "Restoring…"
+msgstr ""
+
+msgid "Restore failed."
+msgstr ""
+
+msgid "Request failed."
+msgstr ""
+
+msgid "Connection failed."
+msgstr ""
+
+msgid "Reset failed."
+msgstr ""
+
+msgid "Delete failed."
+msgstr ""
+
+msgid "No backups yet"
+msgstr ""
+
+msgid "Use Export to create a backup and upload it to R2."
+msgstr ""
+
+msgid "Restore replaces site data"
+msgstr ""
+
+msgid "Restoring will replace the current database and wp-content files on this site. Make sure you understand the impact before continuing."
+msgstr ""
+
+msgid "Reset configuration"
+msgstr ""
+
+msgid "This will reset the plugin configuration and scheduled backups to their defaults. R2 credentials will be kept unless you remove them manually from Settings."
+msgstr ""
+
+msgid "Use this only if you want to start over with a clean configuration."
+msgstr ""
+
+msgid "Restore this backup (destructive action)"
+msgstr ""

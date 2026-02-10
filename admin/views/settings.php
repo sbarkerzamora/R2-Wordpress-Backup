@@ -57,6 +57,38 @@ $exclude_tables = get_option( 'r2wb_exclude_tables', '' );
 			</div>
 		</div>
 
+		<div class="bg-white shadow-sm rounded-lg border border-dashed border-sky-200 p-4 sm:p-6 space-y-3">
+			<h2 class="text-sm font-semibold text-slate-800">
+				<?php esc_html_e( 'Cloudflare R2 integration guide', 'r2-wordpress-backup' ); ?>
+			</h2>
+			<p class="text-xs text-slate-600">
+				<?php esc_html_e( 'Follow these steps to connect this site to your Cloudflare R2 bucket using the S3-compatible API.', 'r2-wordpress-backup' ); ?>
+			</p>
+			<ol class="list-decimal list-inside space-y-1 text-xs text-slate-600">
+				<li>
+					<?php esc_html_e( 'In Cloudflare, go to R2 and create a bucket (for example, "wp-backups").', 'r2-wordpress-backup' ); ?>
+				</li>
+				<li>
+					<?php esc_html_e( 'Copy the Account ID from the R2 dashboard and paste it into the "Account ID" field above.', 'r2-wordpress-backup' ); ?>
+				</li>
+				<li>
+					<?php esc_html_e( 'Create an API token with permission to read and write to your R2 bucket using the S3-compatible API.', 'r2-wordpress-backup' ); ?>
+				</li>
+				<li>
+					<?php esc_html_e( 'From that token, copy the Access Key ID and Secret Access Key and paste them into the fields above.', 'r2-wordpress-backup' ); ?>
+				</li>
+				<li>
+					<?php esc_html_e( 'Enter the exact bucket name in the "Bucket name" field.', 'r2-wordpress-backup' ); ?>
+				</li>
+				<li>
+					<?php esc_html_e( 'Click "Save settings" and then "Test connection" to verify that backups can be uploaded to R2.', 'r2-wordpress-backup' ); ?>
+				</li>
+			</ol>
+			<p class="text-[11px] text-slate-500">
+				<?php esc_html_e( 'Once connected, manual and scheduled backups will be created on this site and automatically uploaded to your R2 bucket.', 'r2-wordpress-backup' ); ?>
+			</p>
+		</div>
+
 		<div class="bg-white shadow-sm rounded-lg border border-slate-200 p-4 sm:p-6 space-y-4">
 			<h2 class="text-sm font-semibold text-slate-800"><?php esc_html_e( 'Backup options', 'r2-wordpress-backup' ); ?></h2>
 			<div class="grid grid-cols-1 md:grid-cols-2 gap-4">

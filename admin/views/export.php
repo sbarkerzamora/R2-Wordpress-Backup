@@ -25,6 +25,6 @@ if ( ! defined( 'ABSPATH' ) || ! current_user_can( 'manage_options' ) ) {
 		<p id="r2wb-backup-desc" class="description text-xs text-slate-500">
 			<?php esc_html_e( 'Creates a full backup (database + files) and uploads it to R2. This may take a few minutes.', 'r2-wordpress-backup' ); ?>
 		</p>
-		<div class="r2wb-backup-progress mt-4 text-sm rounded-md bg-sky-50 border border-sky-100 text-sky-800" style="display:none;" role="status" aria-live="polite"></div>
+		<div class="r2wb-backup-progress r2wb-alert r2wb-alert--info mt-4" style="display:none;" role="status" aria-live="polite"></div>
 	</div>
 </div>

@@ -165,6 +165,22 @@ class R2WB_Admin {
 			array(
 				'ajaxUrl' => admin_url( 'admin-ajax.php' ),
 				'nonce'   => wp_create_nonce( 'r2wb_admin' ),
+				'strings' => array(
+					'confirmReset'   => __( 'Reset plugin options and schedules? R2 credentials will be kept.', 'r2-wordpress-backup' ),
+					'confirmDelete'  => __( 'Delete this backup from R2? This cannot be undone.', 'r2-wordpress-backup' ),
+					'confirmRestore' => __( 'Restore this site from the selected backup? Current database and files will be replaced. This cannot be undone.', 'r2-wordpress-backup' ),
+					'startingBackup' => __( 'Starting backup…', 'r2-wordpress-backup' ),
+					'backupSuccess'  => __( 'Backup completed successfully.', 'r2-wordpress-backup' ),
+					'backupFailed'   => __( 'Backup failed.', 'r2-wordpress-backup' ),
+					'restoring'      => __( 'Restoring…', 'r2-wordpress-backup' ),
+					'restoreSuccess' => __( 'Restore completed.', 'r2-wordpress-backup' ),
+					'restoreFailed'  => __( 'Restore failed.', 'r2-wordpress-backup' ),
+					'requestFailed'  => __( 'Request failed.', 'r2-wordpress-backup' ),
+					'connectionOk'  => __( 'Connection successful.', 'r2-wordpress-backup' ),
+					'connectionFailed' => __( 'Connection failed.', 'r2-wordpress-backup' ),
+					'resetFailed'    => __( 'Reset failed.', 'r2-wordpress-backup' ),
+					'deleteFailed'   => __( 'Delete failed.', 'r2-wordpress-backup' ),
+				),
 			)
 		);
 	}
@@ -318,7 +334,7 @@ class R2WB_Admin {
 			delete_option( $opt );
 		}
 		delete_transient( 'r2wb_backup_count' );
-		wp_send_json_success();
+		wp_send_json_success( array( 'message' => __( 'Options and schedules have been reset.', 'r2-wordpress-backup' ) ) );
 	}
 
 	/**
@@ -367,7 +383,7 @@ class R2WB_Admin {
 			wp_send_json_error( array( 'message' => $result->get_error_message() ) );
 		}
 		delete_transient( 'r2wb_backup_count' );
-		wp_send_json_success();
+		wp_send_json_success( array( 'message' => __( 'Backup deleted from R2.', 'r2-wordpress-backup' ) ) );
 	}
 
 	/**

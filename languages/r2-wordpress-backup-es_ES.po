@@ -210,3 +210,69 @@ msgstr "Error al escribir el archivo."
 
 msgid "Delete failed (HTTP %d)."
 msgstr "Eliminación fallida (HTTP %d)."
+
+msgid "Options and schedules have been reset."
+msgstr "Opciones y programaciones se han restablecido."
+
+msgid "Backup deleted from R2."
+msgstr "Copia eliminada de R2."
+
+msgid "Reset plugin options and schedules? R2 credentials will be kept."
+msgstr "¿Restablecer opciones y programaciones del plugin? Las credenciales R2 se mantendrán."
+
+msgid "Delete this backup from R2? This cannot be undone."
+msgstr "¿Eliminar esta copia de R2? No se puede deshacer."
+
+msgid "Restore this site from the selected backup? Current database and files will be replaced. This cannot be undone."
+msgstr "¿Restaurar este sitio desde la copia seleccionada? Se reemplazarán la base de datos y los archivos actuales. No se puede deshacer."
+
+msgid "Starting backup…"
+msgstr "Iniciando copia…"
+
+msgid "Backup completed successfully."
+msgstr "Copia completada correctamente."
+
+msgid "Backup failed."
+msgstr "Copia fallida."
+
+msgid "Restoring…"
+msgstr "Restaurando…"
+
+msgid "Restore failed."
+msgstr "Restauración fallida."
+
+msgid "Request failed."
+msgstr "Solicitud fallida."
+
+msgid "Connection failed."
+msgstr "Conexión fallida."
+
+msgid "Reset failed."
+msgstr "Restablecimiento fallido."
+
+msgid "Delete failed."
+msgstr "Eliminación fallida."
+
+msgid "No backups yet"
+msgstr "Aún no hay copias"
+
+msgid "Use Export to create a backup and upload it to R2."
+msgstr "Usa Exportar para crear una copia y subirla a R2."
+
+msgid "Restore replaces site data"
+msgstr "Restaurar reemplaza los datos del sitio"
+
+msgid "Restoring will replace the current database and wp-content files on this site. Make sure you understand the impact before continuing."
+msgstr "Restaurar reemplazará la base de datos y los archivos wp-content actuales de este sitio. Asegúrate de entender el impacto antes de continuar."
+
+msgid "Reset configuration"
+msgstr "Restablecer configuración"
+
+msgid "This will reset the plugin configuration and scheduled backups to their defaults. R2 credentials will be kept unless you remove them manually from Settings."
+msgstr "Esto restablecerá la configuración del plugin y las copias programadas a sus valores por defecto. Las credenciales R2 se mantendrán salvo que las borres en Ajustes."
+
+msgid "Use this only if you want to start over with a clean configuration."
+msgstr "Usa esto solo si quieres empezar con una configuración limpia."
+
+msgid "Restore this backup (destructive action)"
+msgstr "Restaurar esta copia (acción destructiva)"

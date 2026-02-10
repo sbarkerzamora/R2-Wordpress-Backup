@@ -210,3 +210,69 @@ msgstr "Failed to write file."
 
 msgid "Delete failed (HTTP %d)."
 msgstr "Delete failed (HTTP %d)."
+
+msgid "Options and schedules have been reset."
+msgstr "Options and schedules have been reset."
+
+msgid "Backup deleted from R2."
+msgstr "Backup deleted from R2."
+
+msgid "Reset plugin options and schedules? R2 credentials will be kept."
+msgstr "Reset plugin options and schedules? R2 credentials will be kept."
+
+msgid "Delete this backup from R2? This cannot be undone."
+msgstr "Delete this backup from R2? This cannot be undone."
+
+msgid "Restore this site from the selected backup? Current database and files will be replaced. This cannot be undone."
+msgstr "Restore this site from the selected backup? Current database and files will be replaced. This cannot be undone."
+
+msgid "Starting backup…"
+msgstr "Starting backup…"
+
+msgid "Backup completed successfully."
+msgstr "Backup completed successfully."
+
+msgid "Backup failed."
+msgstr "Backup failed."
+
+msgid "Restoring…"
+msgstr "Restoring…"
+
+msgid "Restore failed."
+msgstr "Restore failed."
+
+msgid "Request failed."
+msgstr "Request failed."
+
+msgid "Connection failed."
+msgstr "Connection failed."
+
+msgid "Reset failed."
+msgstr "Reset failed."
+
+msgid "Delete failed."
+msgstr "Delete failed."
+
+msgid "No backups yet"
+msgstr "No backups yet"
+
+msgid "Use Export to create a backup and upload it to R2."
+msgstr "Use Export to create a backup and upload it to R2."
+
+msgid "Restore replaces site data"
+msgstr "Restore replaces site data"
+
+msgid "Restoring will replace the current database and wp-content files on this site. Make sure you understand the impact before continuing."
+msgstr "Restoring will replace the current database and wp-content files on this site. Make sure you understand the impact before continuing."
+
+msgid "Reset configuration"
+msgstr "Reset configuration"
+
+msgid "This will reset the plugin configuration and scheduled backups to their defaults. R2 credentials will be kept unless you remove them manually from Settings."
+msgstr "This will reset the plugin configuration and scheduled backups to their defaults. R2 credentials will be kept unless you remove them manually from Settings."
+
+msgid "Use this only if you want to start over with a clean configuration."
+msgstr "Use this only if you want to start over with a clean configuration."
+
+msgid "Restore this backup (destructive action)"
+msgstr "Restore this backup (destructive action)"

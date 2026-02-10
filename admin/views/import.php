@@ -22,8 +22,9 @@ $restore_key = isset( $_GET['restore'] ) ? sanitize_text_field( wp_unslash( $_GE
 	<h1 class="text-xl font-semibold text-slate-900 mb-3"><?php esc_html_e( 'Import', 'r2-wordpress-backup' ); ?></h1>
 	<p class="r2wb-description"><?php esc_html_e( 'Restore this site from a backup stored in R2.', 'r2-wordpress-backup' ); ?></p>
 
-	<div class="mb-4 rounded-md border border-amber-100 bg-amber-50 p-4 text-sm text-amber-800">
-		<p><?php esc_html_e( 'Restoring will replace the current database and wp-content files on this site. Make sure you understand the impact before continuing.', 'r2-wordpress-backup' ); ?></p>
+	<div class="r2wb-alert r2wb-alert--warning mb-4" role="alert">
+		<p class="r2wb-alert__title"><?php esc_html_e( 'Restore replaces site data', 'r2-wordpress-backup' ); ?></p>
+		<p class="r2wb-alert__body"><?php esc_html_e( 'Restoring will replace the current database and wp-content files on this site. Make sure you understand the impact before continuing.', 'r2-wordpress-backup' ); ?></p>
 	</div>
 
 	<div class="bg-white shadow-sm rounded-lg border border-slate-200 p-4 sm:p-6">
@@ -57,6 +58,6 @@ $restore_key = isset( $_GET['restore'] ) ? sanitize_text_field( wp_unslash( $_GE
 				</table>
 			</div>
 		<?php endif; ?>
-		<div class="r2wb-restore-progress mt-4 text-sm rounded-md bg-sky-50 border border-sky-100 text-sky-800" style="display:none;" role="status" aria-live="polite"></div>
+		<div class="r2wb-restore-progress r2wb-alert r2wb-alert--info mt-4" style="display:none;" role="status" aria-live="polite"></div>
 	</div>
 </div>

@@ -25,7 +25,10 @@ $nonce        = wp_create_nonce( 'r2wb_admin' );
 
 	<div class="bg-white shadow-sm rounded-lg border border-slate-200 p-4 sm:p-6">
 		<?php if ( empty( $backups ) ) : ?>
-			<p class="text-sm text-slate-600"><?php esc_html_e( 'No backups yet. Use Export to create one.', 'r2-wordpress-backup' ); ?></p>
+			<div class="r2wb-alert r2wb-alert--info" role="status">
+				<p class="r2wb-alert__title"><?php esc_html_e( 'No backups yet', 'r2-wordpress-backup' ); ?></p>
+				<p class="r2wb-alert__body"><?php esc_html_e( 'Use Export to create a backup and upload it to R2.', 'r2-wordpress-backup' ); ?></p>
+			</div>
 		<?php else : ?>
 			<div class="overflow-x-auto">
 				<table class="wp-list-table widefat fixed striped min-w-full text-sm">
