@@ -5,7 +5,7 @@ Tags: backup, cloudflare, s3, database, restore
 Requires at least: 5.9
 Tested up to: 6.4
 Requires PHP: 7.4
-Stable tag: 1.0.3
+Stable tag: 1.0.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://buymeacoffee.com/stephanbarker
@@ -52,6 +52,9 @@ R2 free tier includes 10 GB storage and 1 million Class A (write) and 10 million
 
 == Upgrade Notice ==
 
+= 1.0.4 =
+Landing page redesign: new hero, responsive layout, Phosphor Icons, mobile nav. Plugin: guard against duplicate load (multiple plugin folders).
+
 = 1.0.3 =
 Project landing page (GitHub Pages) and documentation updates.
 
@@ -73,6 +76,10 @@ Initial release. Full site backups to Cloudflare R2 with export, import, schedul
 If this plugin helps you, you can support its development: [Buy Me a Coffee](https://buymeacoffee.com/stephanbarker)
 
 == Changelog ==
+
+= 1.0.4 =
+* Landing: hero redesign with CTAs and visual block; full responsive layout; Phosphor Icons throughout; mobile navigation with hamburger menu.
+* Plugin: prevent fatal error when two plugin copies are loaded (e.g. old and new folder); only one instance runs.
 
 = 1.0.3 =
 * Project landing page for GitHub Pages (docs/) with download, releases, and support links.
