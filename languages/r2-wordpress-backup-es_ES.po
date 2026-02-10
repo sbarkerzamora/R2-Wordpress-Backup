@@ -1,0 +1,212 @@
+# Spanish (Spain) translation for R2 WordPress Backup
+msgid ""
+msgstr ""
+"Project-Id-Version: R2 WordPress Backup 1.0.0\n"
+"Language: es_ES\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "R2 Backup"
+msgstr "R2 Backup"
+
+msgid "Export"
+msgstr "Exportar"
+
+msgid "Import"
+msgstr "Importar"
+
+msgid "Backups"
+msgstr "Copias de seguridad"
+
+msgid "Reset Hub"
+msgstr "Reset Hub"
+
+msgid "Schedules"
+msgstr "Programaciones"
+
+msgid "Settings"
+msgstr "Ajustes"
+
+msgid "Backups stored in Cloudflare R2."
+msgstr "Copias de seguridad almacenadas en Cloudflare R2."
+
+msgid "No backups yet. Use Export to create one."
+msgstr "Aún no hay copias. Usa Exportar para crear una."
+
+msgid "Backup"
+msgstr "Copia"
+
+msgid "Actions"
+msgstr "Acciones"
+
+msgid "Download"
+msgstr "Descargar"
+
+msgid "Restore"
+msgstr "Restaurar"
+
+msgid "Delete"
+msgstr "Eliminar"
+
+msgid "Create a full backup (files + database) and upload it to R2."
+msgstr "Crear una copia completa (archivos + base de datos) y subirla a R2."
+
+msgid "Start backup"
+msgstr "Iniciar copia"
+
+msgid "Creates a full backup (database + files) and uploads it to R2. This may take a few minutes."
+msgstr "Crea una copia completa (base de datos + archivos) y la sube a R2. Puede tardar unos minutos."
+
+msgid "Restore this site from a backup stored in R2."
+msgstr "Restaurar este sitio desde una copia almacenada en R2."
+
+msgid "Select a backup to restore. This will replace the current site data. Only use on this site."
+msgstr "Elige una copia para restaurar. Sustituirá los datos actuales del sitio. Solo en este sitio."
+
+msgid "No backups in R2."
+msgstr "No hay copias en R2."
+
+msgid "Action"
+msgstr "Acción"
+
+msgid "Restore this backup"
+msgstr "Restaurar esta copia"
+
+msgid "Reset plugin options and schedules. R2 credentials are kept unless you choose to clear them."
+msgstr "Restablecer opciones y programaciones del plugin. Las credenciales R2 se mantienen salvo que las borres."
+
+msgid "Reset options and schedules"
+msgstr "Restablecer opciones y programaciones"
+
+msgid "No automatic backup"
+msgstr "Sin copia automática"
+
+msgid "Once daily"
+msgstr "Una vez al día"
+
+msgid "Once weekly"
+msgstr "Una vez a la semana"
+
+msgid "Once monthly"
+msgstr "Una vez al mes"
+
+msgid "Configure automatic backups to R2."
+msgstr "Configurar copias automáticas a R2."
+
+msgid "Automatic backup"
+msgstr "Copia automática"
+
+msgid "Next run"
+msgstr "Próxima ejecución"
+
+msgid "Save schedule"
+msgstr "Guardar programación"
+
+msgid "Schedule saved."
+msgstr "Programación guardada."
+
+msgid "Account ID"
+msgstr "ID de cuenta"
+
+msgid "Access Key ID"
+msgstr "ID de clave de acceso"
+
+msgid "Secret Access Key"
+msgstr "Clave secreta de acceso"
+
+msgid "Leave blank to keep current"
+msgstr "Dejar en blanco para mantener la actual"
+
+msgid "Leave blank to keep the current secret."
+msgstr "Deja en blanco para mantener la clave actual."
+
+msgid "Bucket name"
+msgstr "Nombre del bucket"
+
+msgid "Retention (keep last N backups)"
+msgstr "Retención (mantener últimas N copias)"
+
+msgid "Exclude paths (one per line)"
+msgstr "Excluir rutas (una por línea)"
+
+msgid "Exclude DB tables (one per line)"
+msgstr "Excluir tablas de la BD (una por línea)"
+
+msgid "Save settings"
+msgstr "Guardar ajustes"
+
+msgid "Test connection"
+msgstr "Probar conexión"
+
+msgid "R2 free tier: 10 GB storage, 1M Class A and 10M Class B operations per month."
+msgstr "Plan gratuito R2: 10 GB almacenamiento, 1M operaciones Clase A y 10M Clase B al mes."
+
+msgid "Settings saved."
+msgstr "Ajustes guardados."
+
+msgid "Permission denied."
+msgstr "Permiso denegado."
+
+msgid "Connection successful."
+msgstr "Conexión correcta."
+
+msgid "Backup completed and uploaded to R2."
+msgstr "Copia completada y subida a R2."
+
+msgid "Invalid key."
+msgstr "Clave no válida."
+
+msgid "Restore completed."
+msgstr "Restauración completada."
+
+msgid "Key"
+msgstr "Clave"
+
+msgid "R2 credentials not configured."
+msgstr "Credenciales R2 no configuradas."
+
+msgid "R2 credentials not configured. Save Account ID, Access Key, Secret Key, and Bucket."
+msgstr "Credenciales R2 no configuradas. Guarda ID de cuenta, clave de acceso, secreto y bucket."
+
+msgid "Access denied. Check your R2 API token and bucket name."
+msgstr "Acceso denegado. Comprueba tu token API R2 y el nombre del bucket."
+
+msgid "Bucket not found."
+msgstr "Bucket no encontrado."
+
+msgid "Connection failed (HTTP %d)."
+msgstr "Conexión fallida (HTTP %d)."
+
+msgid "Could not create ZIP file."
+msgstr "No se pudo crear el archivo ZIP."
+
+msgid "No tables found."
+msgstr "No se encontraron tablas."
+
+msgid "Could not open backup file."
+msgstr "No se pudo abrir el archivo de copia."
+
+msgid "Could not read database file."
+msgstr "No se pudo leer el archivo de base de datos."
+
+msgid "Database error during restore: "
+msgstr "Error de base de datos durante la restauración: "
+
+msgid "File not found or not readable."
+msgstr "Archivo no encontrado o no legible."
+
+msgid "Failed to read file."
+msgstr "Error al leer el archivo."
+
+msgid "Upload failed (HTTP %d)."
+msgstr "Subida fallida (HTTP %d)."
+
+msgid "Download failed (HTTP %d)."
+msgstr "Descarga fallida (HTTP %d)."
+
+msgid "Failed to write file."
+msgstr "Error al escribir el archivo."
+
+msgid "Delete failed (HTTP %d)."
+msgstr "Eliminación fallida (HTTP %d)."

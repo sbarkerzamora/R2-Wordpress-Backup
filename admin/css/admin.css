@@ -1,0 +1,91 @@
+/**
+ * R2 WordPress Backup – Admin styles
+ *
+ * @package R2_WordPress_Backup
+ */
+
+.r2wb-wrap {
+	max-width: 900px;
+	margin: 1.5em 0;
+}
+
+.r2wb-wrap h1 {
+	margin-bottom: 0.25em;
+	font-size: 1.75em;
+}
+
+.r2wb-description {
+	color: #646970;
+	margin-bottom: 1.5em;
+	line-height: 1.5;
+}
+
+.r2wb-form .form-table th {
+	width: 180px;
+}
+
+.r2wb-backup-progress,
+.r2wb-restore-progress {
+	margin-top: 1em;
+	padding: 1em 1.25em;
+	background: #f0f6fc;
+	border-left: 4px solid #2271b1;
+	border-radius: 0 4px 4px 0;
+}
+
+.r2wb-backup-progress.error,
+.r2wb-restore-progress .error {
+	background: #fcf0f1;
+	border-left-color: #d63638;
+}
+
+.r2wb-notice {
+	padding: 0.75em 1em;
+	margin: 1em 0;
+	border-left: 4px solid #00a32a;
+	background: #f0f6fc;
+	border-radius: 0 4px 4px 0;
+}
+
+.r2wb-notice.error {
+	border-left-color: #d63638;
+	background: #fcf0f1;
+}
+
+.r2wb-notice.warning {
+	border-left-color: #dba617;
+	background: #fcf9e8;
+}
+
+/* Buttons and actions */
+.r2wb-wrap .button + .button {
+	margin-left: 0.5em;
+}
+
+.r2wb-wrap .button-hero {
+	margin-top: 0.5em;
+}
+
+.r2wb-wrap .wp-list-table td .button-small {
+	margin-right: 0.5em;
+}
+
+/* Focus for accessibility */
+.r2wb-wrap .button:focus,
+.r2wb-wrap input:focus,
+.r2wb-wrap select:focus,
+.r2wb-wrap textarea:focus {
+	outline: 2px solid #2271b1;
+	outline-offset: 2px;
+}
+
+/* Responsive */
+@media screen and (max-width: 782px) {
+	.r2wb-wrap .form-table th {
+		width: auto;
+	}
+	.r2wb-wrap .wp-list-table td .button-small {
+		display: inline-block;
+		margin: 0.25em 0.25em 0.25em 0;
+	}
+}
