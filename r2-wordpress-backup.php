@@ -3,7 +3,7 @@
  * Plugin Name: R2 Cloud Backup
  * Plugin URI: https://github.com/sbarkerzamora/R2-Wordpress-Backup
  * Description: Full site backups (files + database) with automatic upload to Cloudflare R2 (S3-compatible API). Export, Import, Schedules, and Settings.
- * Version: 1.0.6
+ * Version: 1.0.7
  * Requires at least: 5.9
  * Requires PHP: 7.4
  * Author: Stephan Barker
@@ -31,45 +31,34 @@ add_filter( 'plugin_action_links_' . $r2wb_this_basename, function ( $links ) {
 	return $links;
 }, 10, 1 );
 
-// Register settings page so direct link works even when menu does not (e.g. duplicate plugin folder).
+// Register admin menu from EVERY copy that loads (before the early return).
+// When two copies exist (e.g. r2-cloud-backup + r2-wordpress-backup), the one that loads second
+// bails before adding the menu. This copy then never registers the page, causing 403 on direct access.
 add_action( 'admin_menu', function () {
-	if ( ! current_user_can( 'manage_options' ) ) {
-		return;
+	$r2wb_file = __FILE__;
+	$r2wb_dir  = plugin_dir_path( $r2wb_file );
+	if ( ! defined( 'R2WB_PLUGIN_DIR' ) ) {
+		define( 'R2WB_PLUGIN_DIR', $r2wb_dir );
 	}
-	$r2wb_main = __FILE__;
-	add_submenu_page(
-		null,
-		__( 'R2 Cloud Backup', 'r2-wordpress-backup' ),
-		null,
-		'manage_options',
-		'r2wb-settings',
-		function () use ( $r2wb_main ) {
-			$dir = plugin_dir_path( $r2wb_main );
-			if ( ! defined( 'R2WB_PLUGIN_DIR' ) ) {
-				define( 'R2WB_PLUGIN_DIR', $dir );
-			}
-			if ( ! defined( 'R2WB_PLUGIN_BASENAME' ) ) {
-				define( 'R2WB_PLUGIN_BASENAME', plugin_basename( $r2wb_main ) );
-			}
-			if ( ! defined( 'R2WB_PLUGIN_URL' ) ) {
-				define( 'R2WB_PLUGIN_URL', plugin_dir_url( $r2wb_main ) );
-			}
-			if ( ! defined( 'R2WB_VERSION' ) ) {
-				define( 'R2WB_VERSION', '1.0.6' );
-			}
-			require_once $dir . 'includes/class-r2wb-credentials.php';
-			require_once $dir . 'includes/class-r2wb-s3-signer.php';
-			require_once $dir . 'includes/class-r2wb-r2-client.php';
-			require_once $dir . 'includes/class-r2wb-backup-engine.php';
-			require_once $dir . 'includes/class-r2wb-scheduler.php';
-			require_once $dir . 'includes/class-r2wb-restore.php';
-			require_once $dir . 'includes/class-r2wb-admin.php';
-			$admin = new R2WB_Admin();
-			$admin->render_settings_page();
-		},
-		1
-	);
-}, 1 );
+	if ( ! defined( 'R2WB_PLUGIN_BASENAME' ) ) {
+		define( 'R2WB_PLUGIN_BASENAME', plugin_basename( $r2wb_file ) );
+	}
+	if ( ! defined( 'R2WB_PLUGIN_URL' ) ) {
+		define( 'R2WB_PLUGIN_URL', plugin_dir_url( $r2wb_file ) );
+	}
+		if ( ! defined( 'R2WB_VERSION' ) ) {
+			define( 'R2WB_VERSION', '1.0.7' );
+		}
+	require_once $r2wb_dir . 'includes/class-r2wb-credentials.php';
+	require_once $r2wb_dir . 'includes/class-r2wb-s3-signer.php';
+	require_once $r2wb_dir . 'includes/class-r2wb-r2-client.php';
+	require_once $r2wb_dir . 'includes/class-r2wb-backup-engine.php';
+	require_once $r2wb_dir . 'includes/class-r2wb-scheduler.php';
+	require_once $r2wb_dir . 'includes/class-r2wb-restore.php';
+	require_once $r2wb_dir . 'includes/class-r2wb-admin.php';
+	$admin = new R2WB_Admin();
+	$admin->add_menu_pages();
+}, 10 );
 
 // Reminder on Plugins screen (once per request).
 if ( ! isset( $GLOBALS['r2wb_plugins_notice_done'] ) ) {
@@ -99,7 +88,7 @@ if ( function_exists( 'r2wb_run' ) ) {
 	return;
 }
 
-define( 'R2WB_VERSION', '1.0.6' );
+define( 'R2WB_VERSION', '1.0.7' );
 define( 'R2WB_PLUGIN_FILE', __FILE__ );
 define( 'R2WB_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'R2WB_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );

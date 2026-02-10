@@ -47,7 +47,7 @@ class R2WB_Loader {
 	 * Register admin hooks.
 	 */
 	private function define_admin_hooks() {
-		add_action( 'admin_menu', array( $this->admin, 'add_menu_pages' ), 9999 );
+		// Menu is registered from main file at priority 10; do not register again here.
 		add_filter( 'plugin_action_links_' . R2WB_PLUGIN_BASENAME, array( $this->admin, 'plugin_action_links' ), 10, 1 );
 		add_action( 'admin_enqueue_scripts', array( $this->admin, 'enqueue_assets' ) );
 		add_action( 'admin_footer', array( $this->admin, 'render_support_sidebar' ) );

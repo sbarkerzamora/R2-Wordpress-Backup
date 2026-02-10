@@ -25,10 +25,7 @@ class R2WB_Admin {
 	 * Add admin menu and submenus.
 	 */
 	public function add_menu_pages() {
-		if ( ! current_user_can( 'manage_options' ) ) {
-			return;
-		}
-
+		// Register unconditionally; WordPress filters by capability when displaying and on page access.
 		$menu_title = (string) __( 'R2 Cloud Backup', 'r2-wordpress-backup' );
 
 		add_menu_page(
@@ -41,59 +38,13 @@ class R2WB_Admin {
 			80
 		);
 
-		add_submenu_page(
-			self::MENU_SLUG,
-			__( 'Export', 'r2-wordpress-backup' ),
-			__( 'Export', 'r2-wordpress-backup' ),
-			'manage_options',
-			'r2wb-export',
-			array( $this, 'render_export_page' )
-		);
-
-		add_submenu_page(
-			self::MENU_SLUG,
-			__( 'Import', 'r2-wordpress-backup' ),
-			__( 'Import', 'r2-wordpress-backup' ),
-			'manage_options',
-			'r2wb-import',
-			array( $this, 'render_import_page' )
-		);
-
-		add_submenu_page(
-			self::MENU_SLUG,
-			__( 'Backups', 'r2-wordpress-backup' ),
-			__( 'Backups', 'r2-wordpress-backup' ),
-			'manage_options',
-			self::MENU_SLUG,
-			array( $this, 'render_backups_page' )
-		);
-
-		add_submenu_page(
-			self::MENU_SLUG,
-			__( 'Reset Hub', 'r2-wordpress-backup' ),
-			__( 'Reset Hub', 'r2-wordpress-backup' ),
-			'manage_options',
-			'r2wb-reset',
-			array( $this, 'render_reset_page' )
-		);
-
-		add_submenu_page(
-			self::MENU_SLUG,
-			__( 'Schedules', 'r2-wordpress-backup' ),
-			__( 'Schedules', 'r2-wordpress-backup' ),
-			'manage_options',
-			'r2wb-schedules',
-			array( $this, 'render_schedules_page' )
-		);
-
-		add_submenu_page(
-			self::MENU_SLUG,
-			__( 'Settings', 'r2-wordpress-backup' ),
-			__( 'Settings', 'r2-wordpress-backup' ),
-			'manage_options',
-			'r2wb-settings',
-			array( $this, 'render_settings_page' )
-		);
+		$slug = self::MENU_SLUG;
+		add_submenu_page( $slug, (string) __( 'Export', 'r2-wordpress-backup' ), (string) __( 'Export', 'r2-wordpress-backup' ), 'manage_options', 'r2wb-export', array( $this, 'render_export_page' ) );
+		add_submenu_page( $slug, (string) __( 'Import', 'r2-wordpress-backup' ), (string) __( 'Import', 'r2-wordpress-backup' ), 'manage_options', 'r2wb-import', array( $this, 'render_import_page' ) );
+		add_submenu_page( $slug, (string) __( 'Backups', 'r2-wordpress-backup' ), (string) __( 'Backups', 'r2-wordpress-backup' ), 'manage_options', $slug, array( $this, 'render_backups_page' ) );
+		add_submenu_page( $slug, (string) __( 'Reset Hub', 'r2-wordpress-backup' ), (string) __( 'Reset Hub', 'r2-wordpress-backup' ), 'manage_options', 'r2wb-reset', array( $this, 'render_reset_page' ) );
+		add_submenu_page( $slug, (string) __( 'Schedules', 'r2-wordpress-backup' ), (string) __( 'Schedules', 'r2-wordpress-backup' ), 'manage_options', 'r2wb-schedules', array( $this, 'render_schedules_page' ) );
+		add_submenu_page( $slug, (string) __( 'Settings', 'r2-wordpress-backup' ), (string) __( 'Settings', 'r2-wordpress-backup' ), 'manage_options', 'r2wb-settings', array( $this, 'render_settings_page' ) );
 	}
 
 	/**
@@ -288,7 +239,7 @@ class R2WB_Admin {
 			return;
 		}
 
-		$bmc_url        = 'https://www.buymeacoffee.com/stephanbarker';
+		$bmc_url        = 'https://buymeacoffee.com/stephanbarker';
 		$sidebar_title  = __( 'Support the project', 'r2-wordpress-backup' );
 		$sidebar_text   = __( 'If you find this plugin useful, consider supporting its development.', 'r2-wordpress-backup' );
 		$sidebar_button = __( 'Buy me a coffee', 'r2-wordpress-backup' );

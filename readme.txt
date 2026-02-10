@@ -5,7 +5,7 @@ Tags: backup, cloudflare, s3, database, restore
 Requires at least: 5.9
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 1.0.6
+Stable tag: 1.0.7
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://buymeacoffee.com/stephanbarker
@@ -58,6 +58,9 @@ R2 free tier includes 10 GB storage and 1 million Class A (write) and 10 million
 
 == Upgrade Notice ==
 
+= 1.0.7 =
+Fixes 403 when accessing Settings: menu now registers from every plugin copy. Sidebar donate link updated to buymeacoffee.com/stephanbarker.
+
 = 1.0.6 =
 Fixes admin menu not showing when R2/count fails; resilient to Throwable. WP_Error handling in R2 requests. Docs: manual update and r2-cloud-backup folder name.
 
@@ -88,6 +91,12 @@ Initial release. Full site backups to Cloudflare R2 with export, import, schedul
 If this plugin helps you, you can support its development: [Buy Me a Coffee](https://buymeacoffee.com/stephanbarker)
 
 == Changelog ==
+
+= 1.0.7 =
+* Fix: 403 Forbidden when accessing Settings with duplicate plugin folders; menu now registers from every copy (before early return).
+* Sidebar: donate link https://buymeacoffee.com/stephanbarker.
+* Removed menu badge counter to prevent deprecation warnings.
+* Defensive (string) casts for strpos/str_replace to avoid PHP 8.1+ null deprecations.
 
 = 1.0.6 =
 * Fix: Admin menu no longer disappears when backup count or R2 request fails; catch Throwable in get_r2_backup_count and add_menu_pages.
