@@ -5,7 +5,7 @@ Tags: backup, cloudflare, s3, database, restore
 Requires at least: 5.9
 Tested up to: 6.4
 Requires PHP: 7.4
-Stable tag: 1.0.2
+Stable tag: 1.0.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://buymeacoffee.com/stephanbarker
@@ -52,6 +52,9 @@ R2 free tier includes 10 GB storage and 1 million Class A (write) and 10 million
 
 == Upgrade Notice ==
 
+= 1.0.3 =
+Project landing page (GitHub Pages) and documentation updates.
+
 = 1.0.2 =
 Fixes export failing in production with 500 error: upload now streams large backups to R2 instead of loading the entire file into memory (fixes memory exhaustion on PHP 256MB limit).
 
@@ -70,6 +73,10 @@ Initial release. Full site backups to Cloudflare R2 with export, import, schedul
 If this plugin helps you, you can support its development: [Buy Me a Coffee](https://buymeacoffee.com/stephanbarker)
 
 == Changelog ==
+
+= 1.0.3 =
+* Project landing page for GitHub Pages (docs/) with download, releases, and support links.
+* Documentation and project site updates.
 
 = 1.0.2 =
 * Fix: Export no longer fails with 500 / memory exhaustion in production. Upload to R2 now uses streaming (cURL) so large backup files are not loaded entirely into memory; works with default PHP memory limits (e.g. 256MB).
