@@ -57,11 +57,14 @@ class R2WB_Restore {
 			}
 		}
 
-		// 2. Restore files (wp-content)
-		$wp_content_src = $extract_dir . '/wp-content';
-		if ( is_dir( $wp_content_src ) ) {
-			$this->copy_directory( $wp_content_src, trailingslashit( ABSPATH ) . 'wp-content' );
-		}
+		// 2. Restore files (WordPress files), excluding database.sql and temp dirs.
+		$this->copy_directory(
+			$extract_dir,
+			trailingslashit( ABSPATH ),
+			array(
+				'database.sql',
+			)
+		);
 
 		$this->rmdir_recursive( $temp_dir );
 		return true;
@@ -79,7 +82,21 @@ class R2WB_Restore {
 		if ( $sql === false ) {
 			return new WP_Error( 'r2wb_restore_read', __( 'Could not read database file.', 'r2-wordpress-backup' ) );
 		}
-		// Split by semicolon outside of quoted strings (simplified: split on ";\n" and ";\r\n").
+		// Prefer mysqli::multi_query when available for accurate replay of the dump.
+		if ( $wpdb->dbh instanceof mysqli ) {
+			$mysqli = $wpdb->dbh;
+			if ( ! $mysqli->multi_query( $sql ) ) {
+				return new WP_Error( 'r2wb_restore_db', __( 'Database error during restore: ', 'r2-wordpress-backup' ) . $mysqli->error );
+			}
+			do {
+				if ( $result = $mysqli->store_result() ) { // phpcs:ignore WordPress.NamingConventions.ValidVariableName.VariableNotSnakeCase
+					$result->free();
+				}
+			} while ( $mysqli->more_results() && $mysqli->next_result() );
+			return true;
+		}
+
+		// Fallback: split by semicolon + newline.
 		$statements = array_filter( array_map( 'trim', preg_split( '/;\s*[\r\n]+/', $sql ) ) );
 		foreach ( $statements as $stmt ) {
 			if ( $stmt === '' || strpos( $stmt, '--' ) === 0 ) {
@@ -96,10 +113,11 @@ class R2WB_Restore {
 	/**
 	 * Copy directory recursively.
 	 *
-	 * @param string $src Source directory.
-	 * @param string $dst Destination directory.
+	 * @param string $src      Source directory.
+	 * @param string $dst      Destination directory.
+	 * @param array  $excludes Relative names to exclude (from src root).
 	 */
-	private function copy_directory( $src, $dst ) {
+	private function copy_directory( $src, $dst, array $excludes = array() ) {
 		$dir = opendir( $src );
 		if ( ! $dir ) {
 			return;
@@ -111,10 +129,13 @@ class R2WB_Restore {
 			if ( $file === '.' || $file === '..' ) {
 				continue;
 			}
+			if ( in_array( $file, $excludes, true ) ) {
+				continue;
+			}
 			$src_path = $src . '/' . $file;
 			$dst_path = $dst . '/' . $file;
 			if ( is_dir( $src_path ) ) {
-				$this->copy_directory( $src_path, $dst_path );
+				$this->copy_directory( $src_path, $dst_path, $excludes );
 			} else {
 				copy( $src_path, $dst_path );
 			}

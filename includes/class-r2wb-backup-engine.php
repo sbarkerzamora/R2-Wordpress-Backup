@@ -58,13 +58,10 @@ class R2WB_Backup_Engine {
 		}
 		$zip->addFromString( 'database.sql', $sql );
 
-		// 2. Files (wp-content, excluding configured paths)
+		// 2. Files (full WordPress installation, excluding configured paths and temp dir).
 		$exclude_paths = $this->get_exclude_paths();
-		$base = trailingslashit( ABSPATH );
-		$wp_content = $base . 'wp-content';
-		if ( is_dir( $wp_content ) ) {
-			$this->add_directory_to_zip( $zip, $wp_content, 'wp-content/', $base, $exclude_paths );
-		}
+		$base         = trailingslashit( ABSPATH );
+		$this->add_directory_to_zip( $zip, $base, '', $base, $exclude_paths );
 
 		$zip->close();
 

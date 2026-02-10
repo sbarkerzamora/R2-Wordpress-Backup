@@ -33,7 +33,7 @@ class R2WB_Activator {
 			'r2wb_secret_access_key'  => '',
 			'r2wb_bucket'             => '',
 			'r2wb_retention_count'    => 5,
-			'r2wb_exclude_paths'       => "wp-content/cache\nwp-content/debug.log",
+			'r2wb_exclude_paths'       => "wp-content/cache\nwp-content/debug.log\nwp-content/uploads/r2-backup-temp",
 			'r2wb_exclude_tables'     => '',
 		);
 
