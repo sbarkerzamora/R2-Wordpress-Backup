@@ -48,10 +48,12 @@ class R2WB_Loader {
 	 */
 	private function define_admin_hooks() {
 		add_action( 'admin_menu', array( $this->admin, 'add_menu_pages' ) );
+		add_action( 'admin_menu', array( $this->admin, 'add_menu_badge' ), 999 );
 		add_action( 'admin_enqueue_scripts', array( $this->admin, 'enqueue_assets' ) );
 		add_action( 'admin_footer', array( $this->admin, 'render_support_sidebar' ) );
 		add_action( 'admin_init', array( $this->admin, 'maybe_save_settings' ) );
 		add_action( 'admin_init', array( $this->admin, 'maybe_save_schedule' ) );
+		add_action( 'admin_init', array( $this->admin, 'maybe_show_duplicate_plugin_notice' ) );
 		add_action( 'init', array( $this, 'load_textdomain' ) );
 
 		add_action( 'wp_ajax_r2wb_test_connection', array( $this->admin, 'ajax_test_connection' ) );
@@ -60,6 +62,7 @@ class R2WB_Loader {
 		add_action( 'wp_ajax_r2wb_download_backup', array( $this->admin, 'ajax_download_backup' ) );
 		add_action( 'wp_ajax_r2wb_delete_backup', array( $this->admin, 'ajax_delete_backup' ) );
 		add_action( 'wp_ajax_r2wb_restore_backup', array( $this->admin, 'ajax_restore_backup' ) );
+		add_action( 'wp_ajax_r2wb_dismiss_folder_notice', array( $this->admin, 'ajax_dismiss_folder_notice' ) );
 	}
 
 	/**

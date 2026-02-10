@@ -23,25 +23,14 @@ class R2WB_Admin {
 
 	/**
 	 * Add admin menu and submenus.
+	 * Menu is always registered with a plain title first so it never disappears on error.
 	 */
 	public function add_menu_pages() {
 		if ( ! current_user_can( 'manage_options' ) ) {
 			return;
 		}
 
-		try {
-			$backup_count = $this->get_r2_backup_count();
-		} catch ( \Throwable $e ) {
-			$backup_count = 0;
-			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-				error_log( 'R2 Cloud Backup: menu badge count failed – ' . $e->getMessage() );
-			}
-		}
-
 		$menu_title = __( 'R2 Cloud Backup', 'r2-wordpress-backup' );
-		if ( $backup_count > 0 ) {
-			$menu_title .= ' <span class="awaiting-mod count-' . absint( $backup_count ) . '"><span class="backup-count">' . number_format_i18n( $backup_count ) . '</span></span>';
-		}
 
 		add_menu_page(
 			__( 'R2 Cloud Backup', 'r2-wordpress-backup' ),
@@ -106,6 +95,95 @@ class R2WB_Admin {
 			'r2wb-settings',
 			array( $this, 'render_settings_page' )
 		);
+	}
+
+	/**
+	 * If the plugin is loaded from a folder other than r2-cloud-backup, another copy may be active; show notice.
+	 */
+	public function maybe_show_duplicate_plugin_notice() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+		$folder = dirname( R2WB_PLUGIN_BASENAME );
+		if ( $folder === 'r2-cloud-backup' ) {
+			return;
+		}
+		$dismissed = get_user_meta( get_current_user_id(), 'r2wb_dismiss_folder_notice', true );
+		if ( $dismissed ) {
+			return;
+		}
+		$message = __( 'R2 Cloud Backup: For the menu and updates to work correctly, the plugin folder must be named <strong>r2-cloud-backup</strong>. You may have another copy in a different folder; deactivate one and keep only <code>wp-content/plugins/r2-cloud-backup/</code>.', 'r2-wordpress-backup' );
+		add_action( 'admin_notices', function () use ( $message ) {
+			$nonce = wp_create_nonce( 'r2wb_dismiss_folder_notice' );
+			echo '<div class="notice notice-warning is-dismissible r2wb-folder-notice" data-nonce="' . esc_attr( $nonce ) . '"><p>' . wp_kses( $message, array( 'strong' => array(), 'code' => array() ) ) . '</p></div>';
+		} );
+		add_action( 'admin_footer', array( $this, 'print_dismiss_folder_notice_script' ) );
+	}
+
+	/**
+	 * AJAX: Dismiss the duplicate/folder notice.
+	 */
+	public function ajax_dismiss_folder_notice() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error();
+		}
+		if ( empty( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'r2wb_dismiss_folder_notice' ) ) {
+			wp_send_json_error();
+		}
+		update_user_meta( get_current_user_id(), 'r2wb_dismiss_folder_notice', 1 );
+		wp_send_json_success();
+	}
+
+	/**
+	 * Inline script to dismiss the folder notice via AJAX.
+	 */
+	public function print_dismiss_folder_notice_script() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+		?>
+		<script>
+		(function() {
+			var notice = document.querySelector('.r2wb-folder-notice');
+			if (!notice) return;
+			var btn = notice.querySelector('.notice-dismiss');
+			if (!btn) return;
+			btn.addEventListener('click', function() {
+				var form = new FormData();
+				form.append('action', 'r2wb_dismiss_folder_notice');
+				form.append('nonce', notice.getAttribute('data-nonce'));
+				fetch('<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>', { method: 'POST', body: form, credentials: 'same-origin' });
+			});
+		})();
+		</script>
+		<?php
+	}
+
+	/**
+	 * Add backup count badge to the menu title (runs late on admin_menu so menu is already registered).
+	 */
+	public function add_menu_badge() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+		$count = 0;
+		try {
+			$count = $this->get_r2_backup_count();
+		} catch ( \Throwable $e ) {
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				error_log( 'R2 Cloud Backup: menu badge count failed – ' . $e->getMessage() );
+			}
+		}
+		if ( $count <= 0 || ! isset( $GLOBALS['menu'] ) || ! is_array( $GLOBALS['menu'] ) ) {
+			return;
+		}
+		$badge = ' <span class="awaiting-mod count-' . absint( $count ) . '"><span class="backup-count">' . number_format_i18n( $count ) . '</span></span>';
+		foreach ( $GLOBALS['menu'] as $key => $item ) {
+			if ( isset( $item[2] ) && $item[2] === self::MENU_SLUG ) {
+				$GLOBALS['menu'][ $key ][0] = __( 'R2 Cloud Backup', 'r2-wordpress-backup' ) . $badge;
+				break;
+			}
+		}
 	}
 
 	/**

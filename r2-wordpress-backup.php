@@ -44,7 +44,18 @@ function r2wb_run() {
 	register_activation_hook( R2WB_PLUGIN_FILE, array( $activator, 'activate' ) );
 	register_deactivation_hook( R2WB_PLUGIN_FILE, array( 'R2WB_Deactivator', 'deactivate' ) );
 
-	$loader->run();
+	try {
+		$loader->run();
+	} catch ( \Throwable $e ) {
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			error_log( 'R2 Cloud Backup: ' . $e->getMessage() );
+		}
+		add_action( 'admin_notices', function () use ( $e ) {
+			if ( current_user_can( 'manage_options' ) ) {
+				echo '<div class="notice notice-error"><p><strong>R2 Cloud Backup:</strong> ' . esc_html( $e->getMessage() ) . '</p></div>';
+			}
+		} );
+	}
 }
 
 r2wb_run();
