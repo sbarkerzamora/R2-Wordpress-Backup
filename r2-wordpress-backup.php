@@ -20,6 +20,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+// Prevent fatal error if another copy of the plugin is loaded (e.g. old version in a second folder).
+if ( function_exists( 'r2wb_run' ) ) {
+	return;
+}
+
 define( 'R2WB_VERSION', '1.0.3' );
 define( 'R2WB_PLUGIN_FILE', __FILE__ );
 define( 'R2WB_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );

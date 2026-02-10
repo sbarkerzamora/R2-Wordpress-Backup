@@ -17,69 +17,128 @@
       --color-card-text-muted: #4a4a4a;
       --color-border: #2a2a2a;
     }
+    /* Nav: mobile menu hidden by default, visible when .open; desktop always visible */
+    @media (max-width: 767px) {
+      [data-nav-menu].closed { display: none !important; }
+      [data-nav-menu].open { display: flex !important; }
+    }
+    @media (min-width: 768px) {
+      [data-nav-menu] { display: flex !important; }
+    }
   </style>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- Phosphor Icons https://phosphoricons.com/ -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2/src/regular/style.css" />
 </head>
-<body class="bg-page-bg text-text font-sans antialiased" style="font-family: 'Inter', system-ui, sans-serif;">
+<body class="min-h-screen w-full relative text-text font-sans antialiased" style="font-family: 'Inter', system-ui, sans-serif;">
+  <!-- Dark Horizon Glow background -->
+  <div class="absolute inset-0 z-0 min-h-screen" style="background: radial-gradient(125% 125% at 50% 90%, #000000 40%, #0d1a36 100%);"></div>
+  <div class="relative z-10">
   <!-- Header -->
-  <header class="sticky top-0 z-50 border-b border-border bg-page-bg/95 backdrop-blur">
-    <nav class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-      <a href="#" class="text-xl font-bold tracking-tight text-text">R2 Cloud Backup</a>
-      <ul class="flex items-center gap-8 text-sm">
-        <li><a href="#features" class="text-text-muted transition hover:text-text">Features</a></li>
-        <li><a href="#releases" class="text-text-muted transition hover:text-text">Releases</a></li>
-        <li><a href="#faq" class="text-text-muted transition hover:text-text">FAQ</a></li>
-        <li><a href="#donate" class="inline-flex items-center gap-1.5 rounded-lg bg-page-bg-alt px-4 py-2 text-white ring-1 ring-white/20 transition hover:ring-white/40">Donate →</a></li>
+  <header class="sticky top-0 z-50 border-b border-border bg-black/40 backdrop-blur" style="background-color: rgba(0,0,0,0.4);">
+    <nav class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-4 py-3 sm:px-6 sm:py-4">
+      <a href="#" class="flex items-center gap-2 text-lg font-bold tracking-tight text-text sm:text-xl">
+        <i class="ph ph-cloud text-xl sm:text-2xl"></i>
+        R2 Cloud Backup
+      </a>
+      <button type="button" id="nav-toggle" class="flex h-10 w-10 items-center justify-center rounded-lg text-text hover:bg-white/10 md:hidden" aria-label="Toggle menu" aria-expanded="false">
+        <i class="ph ph-list text-2xl" data-icon-open></i>
+        <i class="ph ph-x text-2xl hidden" data-icon-close></i>
+      </button>
+      <ul id="nav-menu" data-nav-menu class="closed w-full flex flex-col gap-1 rounded-lg bg-page-bg-alt/90 p-4 md:closed md:w-auto md:flex-row md:items-center md:gap-6 md:bg-transparent md:p-0" aria-hidden="true">
+        <li><a href="#features" class="flex items-center gap-2 rounded-md py-2 text-text-muted transition hover:bg-white/5 hover:text-text md:py-0 md:hover:bg-transparent"><i class="ph ph-stack"></i> Features</a></li>
+        <li><a href="#releases" class="flex items-center gap-2 rounded-md py-2 text-text-muted transition hover:bg-white/5 hover:text-text md:py-0 md:hover:bg-transparent"><i class="ph ph-tag"></i> Releases</a></li>
+        <li><a href="#faq" class="flex items-center gap-2 rounded-md py-2 text-text-muted transition hover:bg-white/5 hover:text-text md:py-0 md:hover:bg-transparent"><i class="ph ph-question"></i> FAQ</a></li>
+        <li class="mt-2 border-t border-border pt-2 md:mt-0 md:border-0 md:pt-0"><a href="#donate" class="inline-flex items-center gap-1.5 rounded-lg bg-page-bg-alt px-4 py-2 text-sm text-white ring-1 ring-white/20 transition hover:ring-white/40"><i class="ph ph-coffee"></i> Donate →</a></li>
       </ul>
     </nav>
   </header>
 
   <main>
     <!-- Hero -->
-    <section class="mx-auto max-w-6xl px-6 py-20 md:py-28">
-      <div class="grid gap-12 md:grid-cols-2 md:items-center">
-        <h1 class="text-4xl font-bold leading-tight tracking-tight text-text md:text-5xl">
-          Full site backups to <span class="underline decoration-text-muted decoration-2 underline-offset-4">Cloudflare R2</span>
-        </h1>
-        <p class="text-lg text-text-muted leading-relaxed">
-          R2 Cloud Backup creates complete backups of your WordPress site (files and database) and uploads them to Cloudflare R2 using the S3-compatible API. Works with R2's free tier (10 GB storage, 1M Class A / 10M Class B operations per month).
-        </p>
+    <section class="relative overflow-hidden px-4 pb-16 pt-12 sm:px-6 sm:pb-24 sm:pt-16 md:px-8 md:pb-32 md:pt-20 lg:px-12">
+      <div class="mx-auto max-w-6xl">
+        <div class="grid gap-10 lg:grid-cols-2 lg:gap-16 lg:items-center">
+          <div class="order-2 lg:order-1">
+            <p class="mb-3 inline-flex items-center gap-2 rounded-full border border-border bg-page-bg-alt/50 px-3 py-1.5 text-xs font-medium uppercase tracking-wider text-text-muted sm:text-sm">
+              <i class="ph ph-cloud-arrow-up"></i>
+              WordPress plugin
+            </p>
+            <h1 class="text-3xl font-bold leading-[1.15] tracking-tight text-text sm:text-4xl md:text-5xl lg:text-5xl">
+              Full site backups to
+              <span class="mt-1 block bg-gradient-to-r from-text to-text-muted bg-clip-text text-transparent sm:inline sm:mt-0 sm:underline sm:decoration-text-muted sm:decoration-2 sm:underline-offset-4">Cloudflare R2</span>
+            </h1>
+            <p class="mt-5 max-w-xl text-base leading-relaxed text-text-muted sm:text-lg">
+              One-click export and restore. Files and database, automatically uploaded to R2. No server storage used—works with the free tier.
+            </p>
+            <ul class="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm text-text-muted sm:gap-x-8">
+              <li class="flex items-center gap-2"><i class="ph ph-check-circle text-green-500/90"></i> Export & import</li>
+              <li class="flex items-center gap-2"><i class="ph ph-check-circle text-green-500/90"></i> Scheduled backups</li>
+              <li class="flex items-center gap-2"><i class="ph ph-check-circle text-green-500/90"></i> 10 GB free on R2</li>
+            </ul>
+            <div class="mt-8 flex flex-wrap items-center gap-4">
+              <a href="https://github.com/sbarkerzamora/R2-Wordpress-Backup/releases/latest" class="inline-flex items-center gap-2 rounded-lg bg-white px-5 py-3 text-base font-semibold text-black transition hover:bg-white/90">
+                <i class="ph ph-download-simple"></i>
+                Download
+              </a>
+              <a href="#features" class="inline-flex items-center gap-2 rounded-lg border border-border bg-transparent px-5 py-3 text-base font-medium text-text transition hover:bg-white/5">
+                See features
+                <i class="ph ph-arrow-down"></i>
+              </a>
+            </div>
+          </div>
+          <div class="order-1 flex justify-center lg:order-2 lg:justify-end">
+            <div class="flex size-full max-w-sm items-center justify-center rounded-2xl border border-border bg-page-bg-alt/30 p-8 sm:max-w-md lg:p-10">
+              <div class="flex flex-col items-center gap-6 text-center">
+                <div class="flex size-20 items-center justify-center rounded-2xl bg-card/20 sm:size-24">
+                  <i class="ph ph-cloud text-5xl text-text sm:text-6xl"></i>
+                </div>
+                <div>
+                  <p class="font-semibold text-text">Database + Files</p>
+                  <p class="mt-1 text-sm text-text-muted">Backed up to your R2 bucket</p>
+                </div>
+                <p class="text-xs text-text-muted">S3-compatible • WP-Cron schedules</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
     <!-- Features (two-column: headline left, list right) -->
     <section id="features" class="border-t border-border bg-page-bg-alt/50">
-      <div class="mx-auto max-w-6xl px-6 py-20">
-        <div class="grid gap-16 md:grid-cols-2 md:gap-24">
-          <h2 class="text-3xl font-bold leading-tight text-text md:text-4xl">
-            Everything you need to back up and restore your WordPress site.
+      <div class="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
+        <div class="grid gap-10 md:grid-cols-2 md:gap-16 lg:gap-24">
+          <h2 class="flex flex-col gap-3 text-2xl font-bold leading-tight text-text sm:flex-row sm:items-center sm:text-3xl md:text-4xl">
+            <i class="ph ph-package shrink-0 text-3xl text-text-muted sm:text-4xl"></i>
+            <span>Everything you need to back up and restore your WordPress site.</span>
           </h2>
           <ul class="space-y-0">
-            <li class="flex items-baseline justify-between gap-4 border-b border-border py-4">
-              <span class="font-medium text-text">Export</span>
-              <span class="text-sm text-text-muted">Manual backup</span>
+            <li class="flex flex-col gap-1 border-b border-border py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+              <span class="flex items-center gap-3 font-medium text-text"><i class="ph ph-upload-simple shrink-0 text-xl text-text-muted"></i> Export</span>
+              <span class="text-sm text-text-muted sm:text-right">Manual backup</span>
             </li>
-            <li class="flex items-baseline justify-between gap-4 border-b border-border py-4">
-              <span class="font-medium text-text">Import</span>
-              <span class="text-sm text-text-muted">Restore from R2</span>
+            <li class="flex flex-col gap-1 border-b border-border py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+              <span class="flex items-center gap-3 font-medium text-text"><i class="ph ph-download-simple shrink-0 text-xl text-text-muted"></i> Import</span>
+              <span class="text-sm text-text-muted sm:text-right">Restore from R2</span>
             </li>
-            <li class="flex items-baseline justify-between gap-4 border-b border-border py-4">
-              <span class="font-medium text-text">Backups</span>
-              <span class="text-sm text-text-muted">List & manage</span>
+            <li class="flex flex-col gap-1 border-b border-border py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+              <span class="flex items-center gap-3 font-medium text-text"><i class="ph ph-folder shrink-0 text-xl text-text-muted"></i> Backups</span>
+              <span class="text-sm text-text-muted sm:text-right">List & manage</span>
             </li>
-            <li class="flex items-baseline justify-between gap-4 border-b border-border py-4">
-              <span class="font-medium text-text">Schedules</span>
-              <span class="text-sm text-text-muted">Daily, weekly, monthly</span>
+            <li class="flex flex-col gap-1 border-b border-border py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+              <span class="flex items-center gap-3 font-medium text-text"><i class="ph ph-calendar shrink-0 text-xl text-text-muted"></i> Schedules</span>
+              <span class="text-sm text-text-muted sm:text-right">Daily, weekly, monthly</span>
             </li>
-            <li class="flex items-baseline justify-between gap-4 border-b border-border py-4">
-              <span class="font-medium text-text">Settings</span>
-              <span class="text-sm text-text-muted">Credentials, exclusions, retention</span>
+            <li class="flex flex-col gap-1 border-b border-border py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+              <span class="flex items-center gap-3 font-medium text-text"><i class="ph ph-gear shrink-0 text-xl text-text-muted"></i> Settings</span>
+              <span class="text-sm text-text-muted sm:text-right">Credentials, exclusions, retention</span>
             </li>
-            <li class="flex items-baseline justify-between gap-4 border-b border-border py-4">
-              <span class="font-medium text-text">Reset Hub</span>
-              <span class="text-sm text-text-muted">Reset options & schedules</span>
+            <li class="flex flex-col gap-1 border-b border-border py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+              <span class="flex items-center gap-3 font-medium text-text"><i class="ph ph-arrow-counter-clockwise shrink-0 text-xl text-text-muted"></i> Reset Hub</span>
+              <span class="text-sm text-text-muted sm:text-right">Reset options & schedules</span>
             </li>
           </ul>
         </div>
@@ -88,70 +147,90 @@
 
     <!-- What's in a backup -->
     <section class="border-t border-border">
-      <div class="mx-auto max-w-6xl px-6 py-20">
-        <h2 class="mb-10 text-3xl font-bold text-text">What's in a backup?</h2>
-        <div class="grid gap-8 md:grid-cols-2">
-          <div>
-            <h3 class="mb-2 font-semibold text-text">Database</h3>
-            <p class="text-text-muted">Full SQL dump (all tables, excluding any you list in Settings).</p>
+      <div class="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
+        <h2 class="mb-8 flex flex-wrap items-center gap-3 text-2xl font-bold text-text sm:text-3xl">
+          <i class="ph ph-file-archive shrink-0 text-2xl text-text-muted sm:text-3xl"></i>
+          What's in a backup?
+        </h2>
+        <div class="grid gap-6 sm:gap-8 md:grid-cols-2">
+          <div class="flex gap-4">
+            <i class="ph ph-database mt-0.5 shrink-0 text-2xl text-text-muted"></i>
+            <div class="min-w-0">
+              <h3 class="mb-2 font-semibold text-text">Database</h3>
+              <p class="text-sm text-text-muted sm:text-base">Full SQL dump (all tables, excluding any you list in Settings).</p>
+            </div>
           </div>
-          <div>
-            <h3 class="mb-2 font-semibold text-text">Files</h3>
-            <p class="text-text-muted">wp-content directory, with optional path exclusions (e.g. wp-content/cache).</p>
+          <div class="flex gap-4">
+            <i class="ph ph-folder-open mt-0.5 shrink-0 text-2xl text-text-muted"></i>
+            <div class="min-w-0">
+              <h3 class="mb-2 font-semibold text-text">Files</h3>
+              <p class="text-sm text-text-muted sm:text-base">wp-content directory, with optional path exclusions (e.g. wp-content/cache).</p>
+            </div>
           </div>
         </div>
-        <p class="mt-6 text-sm text-text-muted">
-          Backups are stored as ZIP files in R2 under <code class="rounded bg-page-bg-alt px-1.5 py-0.5 font-mono text-text">backups/&lt;site-slug&gt;/YYYY-MM-DD-HHmm-full.zip</code>. Retention (keep last N backups) is applied when configured in Settings.
+        <p class="mt-6 flex flex-wrap gap-2 text-sm text-text-muted">
+          <i class="ph ph-info mt-0.5 shrink-0"></i>
+          <span>Backups are stored as ZIP files in R2 under <code class="break-all rounded bg-page-bg-alt px-1.5 py-0.5 font-mono text-xs text-text sm:text-sm">backups/&lt;site-slug&gt;/YYYY-MM-DD-HHmm-full.zip</code>. Retention (keep last N backups) is applied when configured in Settings.</span>
         </p>
       </div>
     </section>
 
     <!-- Requirements -->
     <section class="border-t border-border bg-page-bg-alt/50">
-      <div class="mx-auto max-w-6xl px-6 py-16">
-        <h2 class="mb-8 text-2xl font-bold text-text">Requirements</h2>
-        <ul class="space-y-2 text-text-muted">
-          <li>WordPress 5.9+</li>
-          <li>PHP 7.4+</li>
-          <li>Cloudflare account with R2 bucket and API token (Access Key ID + Secret Access Key)</li>
+      <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
+        <h2 class="mb-6 flex items-center gap-3 text-xl font-bold text-text sm:text-2xl">
+          <i class="ph ph-list-checks shrink-0 text-xl text-text-muted sm:text-2xl"></i>
+          Requirements
+        </h2>
+        <ul class="space-y-3 text-sm text-text-muted sm:text-base">
+          <li class="flex items-center gap-3"><i class="ph ph-browser shrink-0 text-xl text-text-muted"></i> WordPress 5.9+</li>
+          <li class="flex items-center gap-3"><i class="ph ph-code shrink-0 text-xl text-text-muted"></i> PHP 7.4+</li>
+          <li class="flex items-start gap-3"><i class="ph ph-cloud mt-0.5 shrink-0 text-xl text-text-muted"></i> <span>Cloudflare account with R2 bucket and API token (Access Key ID + Secret Access Key)</span></li>
         </ul>
       </div>
     </section>
 
     <!-- Download -->
     <section class="border-t border-border">
-      <div class="mx-auto max-w-6xl px-6 py-20">
-        <h2 class="mb-8 text-3xl font-bold text-text">Download</h2>
-        <div class="flex flex-wrap items-center gap-4">
-          <a href="https://github.com/sbarkerzamora/R2-Wordpress-Backup/releases/latest" class="inline-flex items-center gap-2 rounded-lg bg-page-bg-alt px-5 py-3 font-medium text-white ring-1 ring-white/20 transition hover:ring-white/40">
-            Download latest →
+      <div class="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
+        <h2 class="mb-6 flex items-center gap-3 text-2xl font-bold text-text sm:mb-8 sm:text-3xl">
+          <i class="ph ph-download-simple shrink-0 text-2xl text-text-muted sm:text-3xl"></i>
+          Download
+        </h2>
+        <div class="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center">
+          <a href="https://github.com/sbarkerzamora/R2-Wordpress-Backup/releases/latest" class="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-page-bg-alt px-5 py-3 font-medium text-white ring-1 ring-white/20 transition hover:ring-white/40 sm:w-auto">
+            <i class="ph ph-download-simple"></i>
+            Download latest <i class="ph ph-arrow-right"></i>
           </a>
-          <a href="https://github.com/sbarkerzamora/R2-Wordpress-Backup" class="text-text-muted transition hover:text-text">View on GitHub</a>
+          <a href="https://github.com/sbarkerzamora/R2-Wordpress-Backup" class="inline-flex items-center justify-center gap-2 text-text-muted transition hover:text-text sm:justify-start"><i class="ph ph-github-logo"></i> View on GitHub</a>
         </div>
       </div>
     </section>
 
     <!-- Latest releases (beige cards) -->
     <section id="releases" class="border-t border-border bg-page-bg-alt/30">
-      <div class="mx-auto max-w-6xl px-6 py-20">
-        <h2 class="mb-12 text-3xl font-bold text-text">Latest releases</h2>
-        <div class="grid gap-8 md:grid-cols-2">
-          <article class="rounded-xl bg-card p-8 text-card-text shadow-sm">
-            <p class="mb-2 text-xs font-medium uppercase tracking-wider text-card-text-muted">Release</p>
-            <h3 class="mb-2 text-xl font-bold text-card-text">v1.0.3</h3>
+      <div class="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
+        <h2 class="mb-8 flex items-center gap-3 text-2xl font-bold text-text sm:mb-12 sm:text-3xl">
+          <i class="ph ph-tag shrink-0 text-2xl text-text-muted sm:text-3xl"></i>
+          Latest releases
+        </h2>
+        <div class="grid gap-6 sm:gap-8 md:grid-cols-2">
+          <article class="rounded-xl bg-card p-6 text-card-text shadow-sm sm:p-8">
+            <p class="mb-2 flex items-center gap-1.5 text-xs font-medium uppercase tracking-wider text-card-text-muted"><i class="ph ph-tag"></i> Release</p>
+            <h3 class="mb-2 flex items-center gap-2 text-xl font-bold text-card-text"><i class="ph ph-rocket-launch text-card-text-muted"></i> v1.0.3</h3>
             <p class="mb-6 text-sm text-card-text-muted">Project landing page for GitHub Pages and documentation updates.</p>
-            <p class="mb-4 text-xs text-card-text-muted">Stable release</p>
+            <p class="mb-4 flex items-center gap-1.5 text-xs text-card-text-muted"><i class="ph ph-check-circle"></i> Stable release</p>
             <a href="https://github.com/sbarkerzamora/R2-Wordpress-Backup/releases/tag/v1.0.3" class="inline-flex items-center gap-1.5 rounded-lg bg-page-bg px-4 py-2 text-sm font-medium text-white transition hover:opacity-90">
-              Release details →
+              Release details <i class="ph ph-arrow-right"></i>
             </a>
           </article>
-          <article class="rounded-xl bg-card p-8 text-card-text shadow-sm">
-            <p class="mb-2 text-xs font-medium uppercase tracking-wider text-card-text-muted">Release</p>
-            <h3 class="mb-2 text-xl font-bold text-card-text">v1.0.2</h3>
+          <article class="rounded-xl bg-card p-6 text-card-text shadow-sm sm:p-8">
+            <p class="mb-2 flex items-center gap-1.5 text-xs font-medium uppercase tracking-wider text-card-text-muted"><i class="ph ph-tag"></i> Release</p>
+            <h3 class="mb-2 flex items-center gap-2 text-xl font-bold text-card-text"><i class="ph ph-rocket-launch text-card-text-muted"></i> v1.0.2</h3>
             <p class="mb-6 text-sm text-card-text-muted">Fixes export failing in production with 500 error: upload now streams large backups to R2 instead of loading the entire file into memory (fixes memory exhaustion on PHP 256MB limit).</p>
-            <p class="mb-4 text-xs text-card-text-muted">Stable release</p>
+            <p class="mb-4 flex items-center gap-1.5 text-xs text-card-text-muted"><i class="ph ph-check-circle"></i> Stable release</p>
             <a href="https://github.com/sbarkerzamora/R2-Wordpress-Backup/releases/tag/v1.0.2" class="inline-flex items-center gap-1.5 rounded-lg bg-page-bg px-4 py-2 text-sm font-medium text-white transition hover:opacity-90">
-              Release details →
+              Release details <i class="ph ph-arrow-right"></i>
             </a>
           </article>
         </div>
@@ -160,20 +239,32 @@
 
     <!-- FAQ -->
     <section id="faq" class="border-t border-border">
-      <div class="mx-auto max-w-6xl px-6 py-20">
-        <h2 class="mb-12 text-3xl font-bold text-text">Frequently asked questions</h2>
-        <dl class="space-y-10">
-          <div>
-            <dt class="mb-2 font-semibold text-text">Where are backups stored?</dt>
-            <dd class="text-text-muted">Backups are stored in your Cloudflare R2 bucket. They are not kept on your server after upload (except temporarily during creation).</dd>
+      <div class="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
+        <h2 class="mb-8 flex flex-wrap items-center gap-3 text-2xl font-bold text-text sm:mb-12 sm:text-3xl">
+          <i class="ph ph-chat-circle-dots shrink-0 text-2xl text-text-muted sm:text-3xl"></i>
+          Frequently asked questions
+        </h2>
+        <dl class="space-y-8 sm:space-y-10">
+          <div class="flex gap-4">
+            <i class="ph ph-cloud-arrow-down mt-1 shrink-0 text-2xl text-text-muted"></i>
+            <div>
+              <dt class="mb-2 font-semibold text-text">Where are backups stored?</dt>
+              <dd class="text-text-muted">Backups are stored in your Cloudflare R2 bucket. They are not kept on your server after upload (except temporarily during creation).</dd>
+            </div>
           </div>
-          <div>
-            <dt class="mb-2 font-semibold text-text">What is included in a backup?</dt>
-            <dd class="text-text-muted">A full backup includes a SQL dump of the database and a ZIP of the site files (by default wp-content; paths can be excluded in Settings).</dd>
+          <div class="flex gap-4">
+            <i class="ph ph-file-zip mt-1 shrink-0 text-2xl text-text-muted"></i>
+            <div>
+              <dt class="mb-2 font-semibold text-text">What is included in a backup?</dt>
+              <dd class="text-text-muted">A full backup includes a SQL dump of the database and a ZIP of the site files (by default wp-content; paths can be excluded in Settings).</dd>
+            </div>
           </div>
-          <div>
-            <dt class="mb-2 font-semibold text-text">Is the R2 free tier enough?</dt>
-            <dd class="text-text-muted">R2 free tier includes 10 GB storage and 1 million Class A (write) and 10 million Class B (read) operations per month. For small to medium sites with a few backups, this is usually sufficient.</dd>
+          <div class="flex gap-4">
+            <i class="ph ph-gauge mt-1 shrink-0 text-2xl text-text-muted"></i>
+            <div>
+              <dt class="mb-2 font-semibold text-text">Is the R2 free tier enough?</dt>
+              <dd class="text-text-muted">R2 free tier includes 10 GB storage and 1 million Class A (write) and 10 million Class B (read) operations per month. For small to medium sites with a few backups, this is usually sufficient.</dd>
+            </div>
           </div>
         </dl>
       </div>
@@ -181,12 +272,14 @@
 
     <!-- Buy Me a Coffee -->
     <section id="donate" class="border-t border-border bg-page-bg-alt/50">
-      <div class="mx-auto max-w-6xl px-6 py-20">
-        <div class="mx-auto max-w-2xl rounded-2xl bg-page-bg-alt p-10 text-center ring-1 ring-white/10">
-          <h2 class="mb-4 text-2xl font-bold text-text">Support the project</h2>
-          <p class="mb-8 text-text-muted">If this plugin helps you, you can support its development with a coffee.</p>
-          <a href="https://buymeacoffee.com/stephanbarker" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-lg bg-amber-500 px-6 py-3 font-medium text-black transition hover:bg-amber-400">
-            Buy Me a Coffee →
+      <div class="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
+        <div class="mx-auto max-w-2xl rounded-2xl bg-page-bg-alt p-6 text-center ring-1 ring-white/10 sm:p-10">
+          <p class="mb-4 flex justify-center"><i class="ph ph-heart text-3xl text-amber-500/80 sm:text-4xl"></i></p>
+          <h2 class="mb-4 text-xl font-bold text-text sm:text-2xl">Support the project</h2>
+          <p class="mb-6 text-sm text-text-muted sm:mb-8 sm:text-base">If this plugin helps you, you can support its development with a coffee.</p>
+          <a href="https://buymeacoffee.com/stephanbarker" target="_blank" rel="noopener noreferrer" class="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-amber-500 px-6 py-3 font-medium text-black transition hover:bg-amber-400 sm:w-auto">
+            <i class="ph ph-coffee text-xl"></i>
+            Buy Me a Coffee <i class="ph ph-arrow-right"></i>
           </a>
         </div>
       </div>
@@ -195,35 +288,36 @@
 
   <!-- Footer -->
   <footer class="border-t border-border bg-page-bg">
-    <div class="mx-auto max-w-6xl px-6 py-16">
-      <div class="grid gap-12 md:grid-cols-4">
+    <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
+      <div class="grid gap-10 sm:grid-cols-2 md:grid-cols-4 md:gap-12">
         <div>
-          <p class="mb-4 font-bold text-text">R2 Cloud Backup</p>
+          <p class="mb-4 flex items-center gap-2 font-bold text-text"><i class="ph ph-cloud text-xl"></i> R2 Cloud Backup</p>
           <p class="text-sm text-text-muted">WordPress plugin for full site backups to Cloudflare R2.</p>
         </div>
         <div>
-          <p class="mb-4 font-bold text-text">Links</p>
+          <p class="mb-4 flex items-center gap-2 font-bold text-text"><i class="ph ph-link"></i> Links</p>
           <ul class="space-y-2 text-sm text-text-muted">
-            <li><a href="https://github.com/sbarkerzamora/R2-Wordpress-Backup" class="transition hover:text-text">GitHub</a></li>
-            <li><a href="https://github.com/sbarkerzamora/R2-Wordpress-Backup/releases" class="transition hover:text-text">Releases</a></li>
-            <li><a href="https://buymeacoffee.com/stephanbarker" class="transition hover:text-text">Donate</a></li>
+            <li><a href="https://github.com/sbarkerzamora/R2-Wordpress-Backup" class="flex items-center gap-2 transition hover:text-text"><i class="ph ph-github-logo"></i> GitHub</a></li>
+            <li><a href="https://github.com/sbarkerzamora/R2-Wordpress-Backup/releases" class="flex items-center gap-2 transition hover:text-text"><i class="ph ph-tag"></i> Releases</a></li>
+            <li><a href="https://buymeacoffee.com/stephanbarker" class="flex items-center gap-2 transition hover:text-text"><i class="ph ph-coffee"></i> Donate</a></li>
           </ul>
         </div>
         <div>
-          <p class="mb-4 font-bold text-text">Author</p>
+          <p class="mb-4 flex items-center gap-2 font-bold text-text"><i class="ph ph-user"></i> Author</p>
           <ul class="space-y-2 text-sm text-text-muted">
-            <li><a href="https://stephanbarker.com" class="transition hover:text-text">Stephan Barker</a></li>
+            <li><a href="https://stephanbarker.com" class="flex items-center gap-2 transition hover:text-text"><i class="ph ph-user-circle"></i> Stephan Barker</a></li>
           </ul>
         </div>
         <div>
-          <p class="mb-4 font-bold text-text">License</p>
+          <p class="mb-4 flex items-center gap-2 font-bold text-text"><i class="ph ph-scroll"></i> License</p>
           <p class="text-sm text-text-muted">GPL v2 or later</p>
         </div>
       </div>
-      <p class="mt-12 border-t border-border pt-8 text-sm text-text-muted">© 2025 R2 Cloud Backup. Open source.</p>
+      <p class="mt-10 border-t border-border pt-6 text-center text-sm text-text-muted sm:mt-12 sm:pt-8 sm:text-left">© 2025 R2 Cloud Backup. Open source.</p>
     </div>
   </footer>
 
+  </div>
   <script src="js/main.js"></script>
 </body>
 </html>
