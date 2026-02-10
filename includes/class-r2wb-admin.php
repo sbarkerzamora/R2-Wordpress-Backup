@@ -136,10 +136,18 @@ class R2WB_Admin {
 			return;
 		}
 
+		// TailwindCSS via CDN, scoped only to R2 Backup admin pages.
+		wp_enqueue_style(
+			'r2wb-tailwind',
+			'https://cdn.jsdelivr.net/npm/tailwindcss@3.4.1/dist/tailwind.min.css',
+			array(),
+			R2WB_VERSION
+		);
+
 		wp_enqueue_style(
 			'r2wb-admin',
 			R2WB_PLUGIN_URL . 'admin/css/admin.css',
-			array(),
+			array( 'r2wb-tailwind' ),
 			R2WB_VERSION
 		);
 
