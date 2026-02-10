@@ -1,6 +1,8 @@
-# R2 WordPress Backup
+# R2 Cloud Backup
 
 WordPress plugin for full site backups (files + database) with automatic upload to **Cloudflare R2** using the S3-compatible API. Works with R2's free tier (10 GB storage, 1M Class A / 10M Class B operations per month).
+
+If you find this plugin useful, consider [buying me a coffee](https://buymeacoffee.com/stephanbarker) to support development.
 
 ## Features
 
@@ -20,8 +22,8 @@ WordPress plugin for full site backups (files + database) with automatic upload 
 ## Installation
 
 1. Upload the plugin folder to `wp-content/plugins/` or install via **Plugins → Add New** (if distributed via WordPress.org).
-2. Activate **R2 WordPress Backup**.
-3. Go to **R2 Backup → Settings** and enter your Cloudflare R2 credentials:
+2. Activate **R2 Cloud Backup**.
+3. Go to **R2 Cloud Backup → Settings** and enter your Cloudflare R2 credentials:
    - **Account ID** – From Cloudflare dashboard (R2 overview)
    - **Access Key ID** and **Secret Access Key** – From R2 → Manage R2 API Tokens
    - **Bucket name** – Your R2 bucket name
@@ -40,6 +42,10 @@ WordPress plugin for full site backups (files + database) with automatic upload 
 - **Files** – `wp-content` directory, with optional path exclusions (e.g. `wp-content/cache`).
 
 Backups are stored as ZIP files in R2 under `backups/<site-slug>/YYYY-MM-DD-HHmm-full.zip`. Retention (keep last N backups) is applied when configured in Settings.
+
+## Donate
+
+If this plugin helps you, you can support its development: [Buy Me a Coffee](https://buymeacoffee.com/stephanbarker)
 
 ## License
 

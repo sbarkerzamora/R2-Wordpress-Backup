@@ -1,7 +1,7 @@
 <?php
 /**
- * Plugin Name: R2 WordPress Backup
- * Plugin URI: https://github.com/your-org/r2-wordpress-backup
+ * Plugin Name: R2 Cloud Backup
+ * Plugin URI: https://github.com/sbarkerzamora/R2-Wordpress-Backup
  * Description: Full site backups (files + database) with automatic upload to Cloudflare R2 (S3-compatible API). Export, Import, Schedules, and Settings.
  * Version: 1.0.0
  * Requires at least: 5.9

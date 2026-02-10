@@ -1,5 +1,5 @@
 /**
- * R2 WordPress Backup – Admin scripts
+ * R2 Cloud Backup – Admin scripts
  *
  * @package R2_WordPress_Backup
  */

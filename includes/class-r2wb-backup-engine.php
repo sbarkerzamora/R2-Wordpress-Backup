@@ -107,7 +107,7 @@ class R2WB_Backup_Engine {
 			return new WP_Error( 'r2wb_db_export', __( 'No tables found.', 'r2-wordpress-backup' ) );
 		}
 
-		$out = "-- R2 WordPress Backup - Database dump\n";
+		$out = "-- R2 Cloud Backup - Database dump\n";
 		$out .= "-- " . gmdate( 'Y-m-d H:i:s' ) . " UTC\n\n";
 		$out .= "SET FOREIGN_KEY_CHECKS=0;\n\n";
 

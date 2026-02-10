@@ -30,13 +30,13 @@ class R2WB_Admin {
 		}
 
 		$backup_count = $this->get_r2_backup_count();
-		$menu_title  = __( 'R2 Backup', 'r2-wordpress-backup' );
+		$menu_title  = __( 'R2 Cloud Backup', 'r2-wordpress-backup' );
 		if ( $backup_count > 0 ) {
 			$menu_title .= ' <span class="awaiting-mod count-' . absint( $backup_count ) . '"><span class="backup-count">' . number_format_i18n( $backup_count ) . '</span></span>';
 		}
 
 		add_menu_page(
-			__( 'R2 Backup', 'r2-wordpress-backup' ),
+			__( 'R2 Cloud Backup', 'r2-wordpress-backup' ),
 			$menu_title,
 			'manage_options',
 			self::MENU_SLUG,
@@ -136,7 +136,7 @@ class R2WB_Admin {
 			return;
 		}
 
-		// TailwindCSS via CDN, scoped only to R2 Backup admin pages.
+		// TailwindCSS via CDN, scoped only to R2 Cloud Backup admin pages.
 		wp_enqueue_style(
 			'r2wb-tailwind',
 			'https://cdn.jsdelivr.net/npm/tailwindcss@3.4.1/dist/tailwind.min.css',

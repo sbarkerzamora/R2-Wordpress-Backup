@@ -1,8 +1,8 @@
-# Copyright (C) 2024 R2 WordPress Backup
+# Copyright (C) 2024 R2 Cloud Backup
 # This file is distributed under the same license as the plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: R2 WordPress Backup 1.0.0\n"
+"Project-Id-Version: R2 Cloud Backup 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-01-01 00:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "R2 Backup"
+msgid "R2 Cloud Backup"
 msgstr ""
 
 msgid "Export"
