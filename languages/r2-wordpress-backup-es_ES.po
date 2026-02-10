@@ -276,3 +276,12 @@ msgstr "Usa esto solo si quieres empezar con una configuración limpia."
 
 msgid "Restore this backup (destructive action)"
 msgstr "Restaurar esta copia (acción destructiva)"
+
+msgid "Support the project"
+msgstr "Apoya el proyecto"
+
+msgid "If you find this plugin useful, consider supporting its development."
+msgstr "Si te resulta útil este plugin, considera apoyar su desarrollo."
+
+msgid "Buy me a coffee"
+msgstr "Invítame un café"

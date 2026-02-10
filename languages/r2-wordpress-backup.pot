@@ -282,3 +282,12 @@ msgstr ""
 
 msgid "Restore this backup (destructive action)"
 msgstr ""
+
+msgid "Support the project"
+msgstr ""
+
+msgid "If you find this plugin useful, consider supporting its development."
+msgstr ""
+
+msgid "Buy me a coffee"
+msgstr ""

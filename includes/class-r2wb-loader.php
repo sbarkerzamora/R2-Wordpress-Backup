@@ -49,6 +49,7 @@ class R2WB_Loader {
 	private function define_admin_hooks() {
 		add_action( 'admin_menu', array( $this->admin, 'add_menu_pages' ) );
 		add_action( 'admin_enqueue_scripts', array( $this->admin, 'enqueue_assets' ) );
+		add_action( 'admin_footer', array( $this->admin, 'render_support_sidebar' ) );
 		add_action( 'admin_init', array( $this->admin, 'maybe_save_settings' ) );
 		add_action( 'admin_init', array( $this->admin, 'maybe_save_schedule' ) );
 		add_action( 'init', array( $this, 'load_textdomain' ) );
