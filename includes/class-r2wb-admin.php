@@ -228,7 +228,8 @@ class R2WB_Admin {
 	}
 
 	/**
-	 * Render support sidebar (only on R2WB admin pages) and Buy Me a Coffee widget script.
+	 * Render support sidebar (only on R2WB admin pages).
+	 * Link only; no third-party scripts or images (Plugin Directory guideline 8).
 	 */
 	public function render_support_sidebar() {
 		$screen = get_current_screen();
@@ -236,19 +237,16 @@ class R2WB_Admin {
 			return;
 		}
 
-		$bmc_url   = 'https://www.buymeacoffee.com/stephanbarker';
-		$bmc_img   = 'https://img.buymeacoffee.com/button-api/?text=Buy%20me%20a%20coffee&slug=stephanbarker&button_colour=5F7FFF';
-		$sidebar_title = __( 'Support the project', 'r2-wordpress-backup' );
-		$sidebar_text  = __( 'If you find this plugin useful, consider supporting its development.', 'r2-wordpress-backup' );
+		$bmc_url        = 'https://www.buymeacoffee.com/stephanbarker';
+		$sidebar_title  = __( 'Support the project', 'r2-wordpress-backup' );
+		$sidebar_text   = __( 'If you find this plugin useful, consider supporting its development.', 'r2-wordpress-backup' );
+		$sidebar_button = __( 'Buy me a coffee', 'r2-wordpress-backup' );
 		?>
 		<aside class="r2wb-sidebar" id="r2wb-support-sidebar" role="complementary">
 			<h3 class="r2wb-sidebar__title"><?php echo esc_html( $sidebar_title ); ?></h3>
 			<p class="r2wb-sidebar__text"><?php echo esc_html( $sidebar_text ); ?></p>
-			<a href="<?php echo esc_url( $bmc_url ); ?>" target="_blank" rel="noopener noreferrer" class="r2wb-sidebar__button">
-				<img src="<?php echo esc_url( $bmc_img ); ?>" alt="<?php esc_attr_e( 'Buy me a coffee', 'r2-wordpress-backup' ); ?>" width="217" height="60" />
-			</a>
+			<a href="<?php echo esc_url( $bmc_url ); ?>" target="_blank" rel="noopener noreferrer" class="r2wb-sidebar__button"><?php echo esc_html( $sidebar_button ); ?></a>
 		</aside>
-		<script data-name="BMC-Widget" data-cfasync="false" src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js" data-id="stephanbarker" data-description="Support me on Buy me a coffee!" data-message="If you find this plugin useful, consider buy me a coffee to support development." data-color="#5F7FFF" data-position="Right" data-x_margin="18" data-y_margin="18"></script>
 		<?php
 	}
 

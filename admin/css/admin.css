@@ -211,7 +211,19 @@
 
 .r2wb-sidebar__button {
 	display: inline-block;
-	line-height: 0;
+	padding: 0.5rem 1rem;
+	line-height: 1.4;
+	font-size: 0.875rem;
+	font-weight: 500;
+	color: #fff;
+	background: #5f7fff;
+	border-radius: 4px;
+	text-decoration: none;
+}
+
+.r2wb-sidebar__button:hover {
+	background: #4a6ae6;
+	color: #fff;
 }
 
 .r2wb-sidebar__button img {

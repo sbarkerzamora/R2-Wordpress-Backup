@@ -3,9 +3,9 @@
 Contributors: stephanbarker
 Tags: backup, cloudflare, s3, database, restore
 Requires at least: 5.9
-Tested up to: 6.4
+Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 1.0.4
+Stable tag: 1.0.5
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://buymeacoffee.com/stephanbarker
@@ -52,6 +52,9 @@ R2 free tier includes 10 GB storage and 1 million Class A (write) and 10 million
 
 == Upgrade Notice ==
 
+= 1.0.5 =
+WordPress Plugin Directory compliance: support sidebar uses link only (no third-party scripts or images). Readme tested up to 6.7. Docs for plugin submission.
+
 = 1.0.4 =
 Landing page redesign: new hero, responsive layout, Phosphor Icons, mobile nav. Plugin: guard against duplicate load (multiple plugin folders).
 
@@ -76,6 +79,11 @@ Initial release. Full site backups to Cloudflare R2 with export, import, schedul
 If this plugin helps you, you can support its development: [Buy Me a Coffee](https://buymeacoffee.com/stephanbarker)
 
 == Changelog ==
+
+= 1.0.5 =
+* Plugin Directory compliance: admin support sidebar no longer loads external scripts or images; text link only (guideline 8). Button styling for text link.
+* Readme: Tested up to 6.7.
+* Docs: Plugin Directory compliance checklist and submission guide (SUBMIT-TO-WORDPRESS-ORG.md).
 
 = 1.0.4 =
 * Landing: hero redesign with CTAs and visual block; full responsive layout; Phosphor Icons throughout; mobile navigation with hamburger menu.
