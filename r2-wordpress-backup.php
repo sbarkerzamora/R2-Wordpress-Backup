@@ -6,8 +6,8 @@
  * Version: 1.0.0
  * Requires at least: 5.9
  * Requires PHP: 7.4
- * Author: Your Name
- * Author URI: https://example.com
+ * Author: Stephan Barker
+ * Author URI: https://stephanbarker.com
  * License: GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: r2-wordpress-backup
