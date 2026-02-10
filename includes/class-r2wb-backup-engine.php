@@ -115,7 +115,7 @@ class R2WB_Backup_Engine {
 			if ( in_array( $table, $exclude_tables, true ) ) {
 				continue;
 			}
-			$t_esc = '`' . str_replace( '`', '``', $table ) . '`';
+			$t_esc = '`' . str_replace( '`', '``', (string) $table ) . '`';
 			$create = $wpdb->get_row( "SHOW CREATE TABLE " . $t_esc, ARRAY_N );
 			if ( $create ) {
 				$out .= "DROP TABLE IF EXISTS " . $t_esc . ";\n";
@@ -129,7 +129,7 @@ class R2WB_Backup_Engine {
 						$values[] = ( $v === null ) ? 'NULL' : "'" . $wpdb->_real_escape( $v ) . "'";
 					}
 					$cols = array_map( function ( $c ) {
-						return '`' . str_replace( '`', '``', $c ) . '`';
+						return '`' . str_replace( '`', '``', (string) $c ) . '`';
 					}, array_keys( $row ) );
 					$out .= "INSERT INTO " . $t_esc . " (" . implode( ',', $cols ) . ") VALUES (" . implode( ',', $values ) . ");\n";
 				}
@@ -180,10 +180,10 @@ class R2WB_Backup_Engine {
 		foreach ( $iter as $path ) {
 			$full = $path->getPathname();
 			$rel = substr( $full, $base_len );
-			$rel = str_replace( '\\', '/', $rel );
+			$rel = str_replace( '\\', '/', (string) $rel );
 			$skip = false;
 			foreach ( $exclude_paths as $ex ) {
-				$ex = ltrim( str_replace( '\\', '/', $ex ), '/' );
+				$ex = ltrim( str_replace( '\\', '/', (string) $ex ), '/' );
 				if ( $ex === '' ) {
 					continue;
 				}

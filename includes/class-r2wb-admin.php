@@ -23,17 +23,16 @@ class R2WB_Admin {
 
 	/**
 	 * Add admin menu and submenus.
-	 * Menu is always registered with a plain title first so it never disappears on error.
 	 */
 	public function add_menu_pages() {
 		if ( ! current_user_can( 'manage_options' ) ) {
 			return;
 		}
 
-		$menu_title = __( 'R2 Cloud Backup', 'r2-wordpress-backup' );
+		$menu_title = (string) __( 'R2 Cloud Backup', 'r2-wordpress-backup' );
 
 		add_menu_page(
-			__( 'R2 Cloud Backup', 'r2-wordpress-backup' ),
+			$menu_title,
 			$menu_title,
 			'manage_options',
 			self::MENU_SLUG,
@@ -160,55 +159,18 @@ class R2WB_Admin {
 	}
 
 	/**
-	 * Add backup count badge to the menu title (runs late on admin_menu so menu is already registered).
-	 */
-	public function add_menu_badge() {
-		if ( ! current_user_can( 'manage_options' ) ) {
-			return;
-		}
-		$count = 0;
-		try {
-			$count = $this->get_r2_backup_count();
-		} catch ( \Throwable $e ) {
-			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-				error_log( 'R2 Cloud Backup: menu badge count failed – ' . $e->getMessage() );
-			}
-		}
-		if ( $count <= 0 || ! isset( $GLOBALS['menu'] ) || ! is_array( $GLOBALS['menu'] ) ) {
-			return;
-		}
-		$badge = ' <span class="awaiting-mod count-' . absint( $count ) . '"><span class="backup-count">' . number_format_i18n( $count ) . '</span></span>';
-		foreach ( $GLOBALS['menu'] as $key => $item ) {
-			if ( isset( $item[2] ) && $item[2] === self::MENU_SLUG ) {
-				$GLOBALS['menu'][ $key ][0] = __( 'R2 Cloud Backup', 'r2-wordpress-backup' ) . $badge;
-				break;
-			}
-		}
-	}
-
-	/**
-	 * Get backup count from R2 for menu badge (cached briefly).
+	 * Add "Settings" link to the plugin row on the Plugins screen so config is reachable even without sidebar menu.
 	 *
-	 * @return int
+	 * @param array $links Existing links (e.g. Deactivate, Edit).
+	 * @return array
 	 */
-	private function get_r2_backup_count() {
-		$cache_key = 'r2wb_backup_count';
-		$cached    = get_transient( $cache_key );
-		if ( false !== $cached && is_numeric( $cached ) ) {
-			return (int) $cached;
+	public function plugin_action_links( $links ) {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return $links;
 		}
-
-		try {
-			$client = new R2WB_R2_Client();
-			$count  = $client->list_backups_count();
-			set_transient( $cache_key, $count, MINUTE_IN_SECONDS * 5 );
-			return $count;
-		} catch ( \Throwable $e ) {
-			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-				error_log( 'R2 Cloud Backup: get_r2_backup_count – ' . $e->getMessage() );
-			}
-			return 0;
-		}
+		$url = admin_url( 'admin.php?page=r2wb-settings' );
+		$links[] = '<a href="' . esc_url( $url ) . '">' . esc_html__( 'Settings', 'r2-wordpress-backup' ) . '</a>';
+		return $links;
 	}
 
 	/**
@@ -217,7 +179,7 @@ class R2WB_Admin {
 	 * @param string $hook_suffix Current admin page hook.
 	 */
 	public function enqueue_assets( $hook_suffix ) {
-		if ( strpos( $hook_suffix, 'r2wb' ) === false ) {
+		if ( strpos( (string) $hook_suffix, 'r2wb' ) === false ) {
 			return;
 		}
 
@@ -322,7 +284,7 @@ class R2WB_Admin {
 	 */
 	public function render_support_sidebar() {
 		$screen = get_current_screen();
-		if ( ! $screen || strpos( $screen->id, 'r2wb' ) === false || ! current_user_can( 'manage_options' ) ) {
+		if ( ! $screen || strpos( (string) $screen->id, 'r2wb' ) === false || ! current_user_can( 'manage_options' ) ) {
 			return;
 		}
 

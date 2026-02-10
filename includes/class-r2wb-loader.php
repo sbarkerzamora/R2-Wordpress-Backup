@@ -47,8 +47,8 @@ class R2WB_Loader {
 	 * Register admin hooks.
 	 */
 	private function define_admin_hooks() {
-		add_action( 'admin_menu', array( $this->admin, 'add_menu_pages' ) );
-		add_action( 'admin_menu', array( $this->admin, 'add_menu_badge' ), 999 );
+		add_action( 'admin_menu', array( $this->admin, 'add_menu_pages' ), 9999 );
+		add_filter( 'plugin_action_links_' . R2WB_PLUGIN_BASENAME, array( $this->admin, 'plugin_action_links' ), 10, 1 );
 		add_action( 'admin_enqueue_scripts', array( $this->admin, 'enqueue_assets' ) );
 		add_action( 'admin_footer', array( $this->admin, 'render_support_sidebar' ) );
 		add_action( 'admin_init', array( $this->admin, 'maybe_save_settings' ) );
@@ -80,7 +80,7 @@ class R2WB_Loader {
 		load_plugin_textdomain(
 			'r2-wordpress-backup',
 			false,
-			dirname( R2WB_PLUGIN_BASENAME ) . '/languages'
+			(string) dirname( R2WB_PLUGIN_BASENAME ) . '/languages'
 		);
 	}
 }

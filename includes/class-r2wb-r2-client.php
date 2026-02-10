@@ -320,7 +320,7 @@ class R2WB_R2_Client {
 	 * @return true|WP_Error
 	 */
 	public function download( $remote_key, $local_path ) {
-		if ( strpos( $remote_key, $this->prefix ) !== 0 ) {
+		if ( strpos( (string) $remote_key, (string) $this->prefix ) !== 0 ) {
 			return new WP_Error( 'r2wb_invalid_key', __( 'Invalid backup key.', 'r2-wordpress-backup' ) );
 		}
 		$config = $this->get_config();
@@ -346,7 +346,7 @@ class R2WB_R2_Client {
 	 * @return true|WP_Error
 	 */
 	public function delete( $remote_key ) {
-		if ( strpos( $remote_key, $this->prefix ) !== 0 ) {
+		if ( strpos( (string) $remote_key, (string) $this->prefix ) !== 0 ) {
 			return new WP_Error( 'r2wb_invalid_key', __( 'Invalid backup key.', 'r2-wordpress-backup' ) );
 		}
 		$config = $this->get_config();

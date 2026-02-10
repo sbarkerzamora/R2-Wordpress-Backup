@@ -21,10 +21,10 @@ class R2WB_Credentials {
 	 */
 	public static function get_secret_key() {
 		$stored = get_option( 'r2wb_secret_access_key', '' );
-		if ( strpos( $stored, 'r2wb_enc:' ) === 0 ) {
+		if ( strpos( (string) $stored, 'r2wb_enc:' ) === 0 ) {
 			return self::decrypt( substr( $stored, 9 ) );
 		}
-		return $stored;
+		return (string) $stored;
 	}
 
 	/**

@@ -99,7 +99,7 @@ class R2WB_Restore {
 		// Fallback: split by semicolon + newline.
 		$statements = array_filter( array_map( 'trim', preg_split( '/;\s*[\r\n]+/', $sql ) ) );
 		foreach ( $statements as $stmt ) {
-			if ( $stmt === '' || strpos( $stmt, '--' ) === 0 ) {
+			if ( $stmt === '' || strpos( (string) $stmt, '--' ) === 0 ) {
 				continue;
 			}
 			$wpdb->query( $stmt );

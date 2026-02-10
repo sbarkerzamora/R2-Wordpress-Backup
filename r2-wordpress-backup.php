@@ -20,6 +20,80 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+// Settings link on Plugins page (registered for every copy so it works even when this copy does not run).
+$r2wb_this_basename = plugin_basename( __FILE__ );
+add_filter( 'plugin_action_links_' . $r2wb_this_basename, function ( $links ) {
+	if ( ! current_user_can( 'manage_options' ) ) {
+		return $links;
+	}
+	$url = admin_url( 'admin.php?page=r2wb-settings' );
+	$links[] = '<a href="' . esc_url( $url ) . '">' . esc_html__( 'Settings', 'r2-wordpress-backup' ) . '</a>';
+	return $links;
+}, 10, 1 );
+
+// Register settings page so direct link works even when menu does not (e.g. duplicate plugin folder).
+add_action( 'admin_menu', function () {
+	if ( ! current_user_can( 'manage_options' ) ) {
+		return;
+	}
+	$r2wb_main = __FILE__;
+	add_submenu_page(
+		null,
+		__( 'R2 Cloud Backup', 'r2-wordpress-backup' ),
+		null,
+		'manage_options',
+		'r2wb-settings',
+		function () use ( $r2wb_main ) {
+			$dir = plugin_dir_path( $r2wb_main );
+			if ( ! defined( 'R2WB_PLUGIN_DIR' ) ) {
+				define( 'R2WB_PLUGIN_DIR', $dir );
+			}
+			if ( ! defined( 'R2WB_PLUGIN_BASENAME' ) ) {
+				define( 'R2WB_PLUGIN_BASENAME', plugin_basename( $r2wb_main ) );
+			}
+			if ( ! defined( 'R2WB_PLUGIN_URL' ) ) {
+				define( 'R2WB_PLUGIN_URL', plugin_dir_url( $r2wb_main ) );
+			}
+			if ( ! defined( 'R2WB_VERSION' ) ) {
+				define( 'R2WB_VERSION', '1.0.6' );
+			}
+			require_once $dir . 'includes/class-r2wb-credentials.php';
+			require_once $dir . 'includes/class-r2wb-s3-signer.php';
+			require_once $dir . 'includes/class-r2wb-r2-client.php';
+			require_once $dir . 'includes/class-r2wb-backup-engine.php';
+			require_once $dir . 'includes/class-r2wb-scheduler.php';
+			require_once $dir . 'includes/class-r2wb-restore.php';
+			require_once $dir . 'includes/class-r2wb-admin.php';
+			$admin = new R2WB_Admin();
+			$admin->render_settings_page();
+		},
+		1
+	);
+}, 1 );
+
+// Reminder on Plugins screen (once per request).
+if ( ! isset( $GLOBALS['r2wb_plugins_notice_done'] ) ) {
+	$GLOBALS['r2wb_plugins_notice_done'] = true;
+	add_action( 'load-plugins.php', function () {
+		add_action( 'admin_notices', function () {
+			if ( ! current_user_can( 'manage_options' ) ) {
+				return;
+			}
+			$url = admin_url( 'admin.php?page=r2wb-settings' );
+			echo '<div class="notice notice-info"><p><strong>R2 Cloud Backup:</strong> ';
+			echo wp_kses(
+				sprintf(
+					/* translators: %s: link to settings page */
+					__( 'To open configuration, click <a href="%s">Settings</a> next to "Deactivate" in the R2 Cloud Backup row below.', 'r2-wordpress-backup' ),
+					esc_url( $url )
+				),
+				array( 'a' => array( 'href' => array() ) )
+			);
+			echo '</p></div>';
+		}, 5 );
+	} );
+}
+
 // Prevent fatal error if another copy of the plugin is loaded (e.g. old version in a second folder).
 if ( function_exists( 'r2wb_run' ) ) {
 	return;
