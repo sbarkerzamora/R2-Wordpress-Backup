@@ -215,7 +215,7 @@ class R2WB_R2_Client {
 	}
 
 	/**
-	 * Upload a file to R2.
+	 * Upload a file to R2 (streaming to avoid memory exhaustion on large backups).
 	 *
 	 * @param string $local_path  Full path to local file.
 	 * @param string $remote_key  Key (path) in bucket.
@@ -225,21 +225,86 @@ class R2WB_R2_Client {
 		if ( ! is_readable( $local_path ) ) {
 			return new WP_Error( 'r2wb_file_unreadable', __( 'File not found or not readable.', 'r2-wordpress-backup' ) );
 		}
-		$body = file_get_contents( $local_path );
-		if ( $body === false ) {
-			return new WP_Error( 'r2wb_file_read_failed', __( 'Failed to read file.', 'r2-wordpress-backup' ) );
-		}
 		$config = $this->get_config();
 		if ( $config === null ) {
 			return new WP_Error( 'r2wb_not_configured', __( 'R2 credentials not configured.', 'r2-wordpress-backup' ) );
 		}
-		$bucket = $config['bucket'];
-		$path = '/' . $bucket . '/' . self::encode_key( $remote_key );
-		$res = $this->request( 'PUT', $path, '', $body, $config );
+		$filesize = filesize( $local_path );
+		if ( $filesize === false ) {
+			return new WP_Error( 'r2wb_file_read_failed', __( 'Failed to read file size.', 'r2-wordpress-backup' ) );
+		}
+		$res = $this->request_put_stream( $local_path, (int) $filesize, $remote_key, $config );
 		if ( $res['code'] === 200 ) {
 			return true;
 		}
 		return new WP_Error( 'r2wb_upload_failed', sprintf( __( 'Upload failed (HTTP %d).', 'r2-wordpress-backup' ), $res['code'] ) );
+	}
+
+	/**
+	 * Perform a streaming PUT to R2 (file is read in chunks, never fully loaded into memory).
+	 *
+	 * @param string $local_path Full path to local file.
+	 * @param int    $filesize   File size in bytes.
+	 * @param string $remote_key Key (path) in bucket.
+	 * @param array  $config     Config from get_config().
+	 * @return array{code:int, body:string, headers:array}
+	 */
+	private function request_put_stream( $local_path, $filesize, $remote_key, array $config ) {
+		$bucket = $config['bucket'];
+		$path   = '/' . $bucket . '/' . self::encode_key( $remote_key );
+		$host   = $config['account_id'] . '.r2.cloudflarestorage.com';
+		$headers = array(
+			'content-type'   => 'application/octet-stream',
+			'content-length' => (string) $filesize,
+		);
+		// Sign with empty body so we get UNSIGNED-PAYLOAD and can stream the real body.
+		$headers = R2WB_S3_Signer::sign(
+			'PUT',
+			$host,
+			$path,
+			'',
+			$headers,
+			'',
+			$config['access_key'],
+			$config['secret_key'],
+			'auto'
+		);
+		$url = $this->get_base_url( $config ) . $path;
+		$ch  = curl_init( $url );
+		if ( $ch === false ) {
+			return array( 'code' => 0, 'body' => '', 'headers' => array() );
+		}
+		$fh = fopen( $local_path, 'rb' );
+		if ( $fh === false ) {
+			curl_close( $ch );
+			return array( 'code' => 0, 'body' => '', 'headers' => array() );
+		}
+		$curl_headers = array();
+		foreach ( $headers as $k => $v ) {
+			$curl_headers[] = $k . ': ' . $v;
+		}
+		curl_setopt_array( $ch, array(
+			CURLOPT_PUT            => true,
+			CURLOPT_INFILE         => $fh,
+			CURLOPT_INFILESIZE     => $filesize,
+			CURLOPT_HTTPHEADER     => $curl_headers,
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_TIMEOUT        => 0,
+			CURLOPT_CONNECTTIMEOUT => 30,
+		) );
+		$body_res = curl_exec( $ch );
+		$code    = (int) curl_getinfo( $ch, CURLINFO_RESPONSE_CODE );
+		$errno   = curl_errno( $ch );
+		curl_close( $ch );
+		fclose( $fh );
+		if ( $errno !== 0 ) {
+			return array( 'code' => 0, 'body' => $body_res ?: '', 'headers' => array() );
+		}
+		return array(
+			'code'    => $code,
+			'body'    => is_string( $body_res ) ? $body_res : '',
+			'headers' => array(),
+		);
 	}
 
 	/**
