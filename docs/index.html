@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>R2 Cloud Backup – WordPress backups to Cloudflare R2</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style type="text/tailwindcss">
+    @theme {
+      --color-page-bg: #0A0A0A;
+      --color-page-bg-alt: #121212;
+      --color-text: #E8E8E8;
+      --color-text-muted: #A0A0A0;
+      --color-card: #EDE8E2;
+      --color-card-alt: #F5F1EB;
+      --color-card-text: #1a1a1a;
+      --color-card-text-muted: #4a4a4a;
+      --color-border: #2a2a2a;
+    }
+  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body class="bg-page-bg text-text font-sans antialiased" style="font-family: 'Inter', system-ui, sans-serif;">
+  <!-- Header -->
+  <header class="sticky top-0 z-50 border-b border-border bg-page-bg/95 backdrop-blur">
+    <nav class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+      <a href="#" class="text-xl font-bold tracking-tight text-text">R2 Cloud Backup</a>
+      <ul class="flex items-center gap-8 text-sm">
+        <li><a href="#features" class="text-text-muted transition hover:text-text">Features</a></li>
+        <li><a href="#releases" class="text-text-muted transition hover:text-text">Releases</a></li>
+        <li><a href="#faq" class="text-text-muted transition hover:text-text">FAQ</a></li>
+        <li><a href="#donate" class="inline-flex items-center gap-1.5 rounded-lg bg-page-bg-alt px-4 py-2 text-white ring-1 ring-white/20 transition hover:ring-white/40">Donate →</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section class="mx-auto max-w-6xl px-6 py-20 md:py-28">
+      <div class="grid gap-12 md:grid-cols-2 md:items-center">
+        <h1 class="text-4xl font-bold leading-tight tracking-tight text-text md:text-5xl">
+          Full site backups to <span class="underline decoration-text-muted decoration-2 underline-offset-4">Cloudflare R2</span>
+        </h1>
+        <p class="text-lg text-text-muted leading-relaxed">
+          R2 Cloud Backup creates complete backups of your WordPress site (files and database) and uploads them to Cloudflare R2 using the S3-compatible API. Works with R2's free tier (10 GB storage, 1M Class A / 10M Class B operations per month).
+        </p>
+      </div>
+    </section>
+
+    <!-- Features (two-column: headline left, list right) -->
+    <section id="features" class="border-t border-border bg-page-bg-alt/50">
+      <div class="mx-auto max-w-6xl px-6 py-20">
+        <div class="grid gap-16 md:grid-cols-2 md:gap-24">
+          <h2 class="text-3xl font-bold leading-tight text-text md:text-4xl">
+            Everything you need to back up and restore your WordPress site.
+          </h2>
+          <ul class="space-y-0">
+            <li class="flex items-baseline justify-between gap-4 border-b border-border py-4">
+              <span class="font-medium text-text">Export</span>
+              <span class="text-sm text-text-muted">Manual backup</span>
+            </li>
+            <li class="flex items-baseline justify-between gap-4 border-b border-border py-4">
+              <span class="font-medium text-text">Import</span>
+              <span class="text-sm text-text-muted">Restore from R2</span>
+            </li>
+            <li class="flex items-baseline justify-between gap-4 border-b border-border py-4">
+              <span class="font-medium text-text">Backups</span>
+              <span class="text-sm text-text-muted">List & manage</span>
+            </li>
+            <li class="flex items-baseline justify-between gap-4 border-b border-border py-4">
+              <span class="font-medium text-text">Schedules</span>
+              <span class="text-sm text-text-muted">Daily, weekly, monthly</span>
+            </li>
+            <li class="flex items-baseline justify-between gap-4 border-b border-border py-4">
+              <span class="font-medium text-text">Settings</span>
+              <span class="text-sm text-text-muted">Credentials, exclusions, retention</span>
+            </li>
+            <li class="flex items-baseline justify-between gap-4 border-b border-border py-4">
+              <span class="font-medium text-text">Reset Hub</span>
+              <span class="text-sm text-text-muted">Reset options & schedules</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- What's in a backup -->
+    <section class="border-t border-border">
+      <div class="mx-auto max-w-6xl px-6 py-20">
+        <h2 class="mb-10 text-3xl font-bold text-text">What's in a backup?</h2>
+        <div class="grid gap-8 md:grid-cols-2">
+          <div>
+            <h3 class="mb-2 font-semibold text-text">Database</h3>
+            <p class="text-text-muted">Full SQL dump (all tables, excluding any you list in Settings).</p>
+          </div>
+          <div>
+            <h3 class="mb-2 font-semibold text-text">Files</h3>
+            <p class="text-text-muted">wp-content directory, with optional path exclusions (e.g. wp-content/cache).</p>
+          </div>
+        </div>
+        <p class="mt-6 text-sm text-text-muted">
+          Backups are stored as ZIP files in R2 under <code class="rounded bg-page-bg-alt px-1.5 py-0.5 font-mono text-text">backups/&lt;site-slug&gt;/YYYY-MM-DD-HHmm-full.zip</code>. Retention (keep last N backups) is applied when configured in Settings.
+        </p>
+      </div>
+    </section>
+
+    <!-- Requirements -->
+    <section class="border-t border-border bg-page-bg-alt/50">
+      <div class="mx-auto max-w-6xl px-6 py-16">
+        <h2 class="mb-8 text-2xl font-bold text-text">Requirements</h2>
+        <ul class="space-y-2 text-text-muted">
+          <li>WordPress 5.9+</li>
+          <li>PHP 7.4+</li>
+          <li>Cloudflare account with R2 bucket and API token (Access Key ID + Secret Access Key)</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Download -->
+    <section class="border-t border-border">
+      <div class="mx-auto max-w-6xl px-6 py-20">
+        <h2 class="mb-8 text-3xl font-bold text-text">Download</h2>
+        <div class="flex flex-wrap items-center gap-4">
+          <a href="https://github.com/sbarkerzamora/R2-Wordpress-Backup/releases/latest" class="inline-flex items-center gap-2 rounded-lg bg-page-bg-alt px-5 py-3 font-medium text-white ring-1 ring-white/20 transition hover:ring-white/40">
+            Download latest →
+          </a>
+          <a href="https://github.com/sbarkerzamora/R2-Wordpress-Backup" class="text-text-muted transition hover:text-text">View on GitHub</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Latest releases (beige cards) -->
+    <section id="releases" class="border-t border-border bg-page-bg-alt/30">
+      <div class="mx-auto max-w-6xl px-6 py-20">
+        <h2 class="mb-12 text-3xl font-bold text-text">Latest releases</h2>
+        <div class="grid gap-8 md:grid-cols-2">
+          <article class="rounded-xl bg-card p-8 text-card-text shadow-sm">
+            <p class="mb-2 text-xs font-medium uppercase tracking-wider text-card-text-muted">Release</p>
+            <h3 class="mb-2 text-xl font-bold text-card-text">v1.0.2</h3>
+            <p class="mb-6 text-sm text-card-text-muted">Fixes export failing in production with 500 error: upload now streams large backups to R2 instead of loading the entire file into memory (fixes memory exhaustion on PHP 256MB limit).</p>
+            <p class="mb-4 text-xs text-card-text-muted">Stable release</p>
+            <a href="https://github.com/sbarkerzamora/R2-Wordpress-Backup/releases/tag/v1.0.2" class="inline-flex items-center gap-1.5 rounded-lg bg-page-bg px-4 py-2 text-sm font-medium text-white transition hover:opacity-90">
+              Release details →
+            </a>
+          </article>
+          <article class="rounded-xl bg-card p-8 text-card-text shadow-sm">
+            <p class="mb-2 text-xs font-medium uppercase tracking-wider text-card-text-muted">Release</p>
+            <h3 class="mb-2 text-xl font-bold text-card-text">v1.0.1</h3>
+            <p class="mb-6 text-sm text-card-text-muted">Initial release. Full site backups to Cloudflare R2 with export, import, schedules, and settings.</p>
+            <p class="mb-4 text-xs text-card-text-muted">Stable release</p>
+            <a href="https://github.com/sbarkerzamora/R2-Wordpress-Backup/releases/tag/v1.0.1" class="inline-flex items-center gap-1.5 rounded-lg bg-page-bg px-4 py-2 text-sm font-medium text-white transition hover:opacity-90">
+              Release details →
+            </a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="border-t border-border">
+      <div class="mx-auto max-w-6xl px-6 py-20">
+        <h2 class="mb-12 text-3xl font-bold text-text">Frequently asked questions</h2>
+        <dl class="space-y-10">
+          <div>
+            <dt class="mb-2 font-semibold text-text">Where are backups stored?</dt>
+            <dd class="text-text-muted">Backups are stored in your Cloudflare R2 bucket. They are not kept on your server after upload (except temporarily during creation).</dd>
+          </div>
+          <div>
+            <dt class="mb-2 font-semibold text-text">What is included in a backup?</dt>
+            <dd class="text-text-muted">A full backup includes a SQL dump of the database and a ZIP of the site files (by default wp-content; paths can be excluded in Settings).</dd>
+          </div>
+          <div>
+            <dt class="mb-2 font-semibold text-text">Is the R2 free tier enough?</dt>
+            <dd class="text-text-muted">R2 free tier includes 10 GB storage and 1 million Class A (write) and 10 million Class B (read) operations per month. For small to medium sites with a few backups, this is usually sufficient.</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- Buy Me a Coffee -->
+    <section id="donate" class="border-t border-border bg-page-bg-alt/50">
+      <div class="mx-auto max-w-6xl px-6 py-20">
+        <div class="mx-auto max-w-2xl rounded-2xl bg-page-bg-alt p-10 text-center ring-1 ring-white/10">
+          <h2 class="mb-4 text-2xl font-bold text-text">Support the project</h2>
+          <p class="mb-8 text-text-muted">If this plugin helps you, you can support its development with a coffee.</p>
+          <a href="https://buymeacoffee.com/stephanbarker" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-lg bg-amber-500 px-6 py-3 font-medium text-black transition hover:bg-amber-400">
+            Buy Me a Coffee →
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-border bg-page-bg">
+    <div class="mx-auto max-w-6xl px-6 py-16">
+      <div class="grid gap-12 md:grid-cols-4">
+        <div>
+          <p class="mb-4 font-bold text-text">R2 Cloud Backup</p>
+          <p class="text-sm text-text-muted">WordPress plugin for full site backups to Cloudflare R2.</p>
+        </div>
+        <div>
+          <p class="mb-4 font-bold text-text">Links</p>
+          <ul class="space-y-2 text-sm text-text-muted">
+            <li><a href="https://github.com/sbarkerzamora/R2-Wordpress-Backup" class="transition hover:text-text">GitHub</a></li>
+            <li><a href="https://github.com/sbarkerzamora/R2-Wordpress-Backup/releases" class="transition hover:text-text">Releases</a></li>
+            <li><a href="https://buymeacoffee.com/stephanbarker" class="transition hover:text-text">Donate</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="mb-4 font-bold text-text">Author</p>
+          <ul class="space-y-2 text-sm text-text-muted">
+            <li><a href="https://stephanbarker.com" class="transition hover:text-text">Stephan Barker</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="mb-4 font-bold text-text">License</p>
+          <p class="text-sm text-text-muted">GPL v2 or later</p>
+        </div>
+      </div>
+      <p class="mt-12 border-t border-border pt-8 text-sm text-text-muted">© 2025 R2 Cloud Backup. Open source.</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
