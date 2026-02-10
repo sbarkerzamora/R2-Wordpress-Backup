@@ -5,7 +5,7 @@ Tags: backup, cloudflare, s3, database, restore
 Requires at least: 5.9
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 1.0.5
+Stable tag: 1.0.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://buymeacoffee.com/stephanbarker
@@ -31,10 +31,16 @@ You need a Cloudflare account and an R2 bucket with API tokens (Access Key ID an
 
 == Installation ==
 
-1. Upload the plugin folder to `wp-content/plugins/` or install via WordPress admin.
+1. Upload the plugin folder to `wp-content/plugins/` or install via WordPress admin. The plugin folder name must be **r2-cloud-backup** (so the path is `wp-content/plugins/r2-cloud-backup/` with `r2-wordpress-backup.php` inside).
 2. Activate the plugin.
 3. Go to R2 Cloud Backup > Settings and enter your Cloudflare R2 credentials (Account ID, Access Key ID, Secret Access Key, Bucket name).
 4. Use Export to create a backup or Schedules to set up automatic backups.
+
+= Manual update =
+
+1. Deactivate the plugin in Plugins.
+2. Replace the plugin folder with the new version, or upload a zip that contains a folder named **r2-cloud-backup** (so WordPress installs to `wp-content/plugins/r2-cloud-backup/`). If the zip uses a different folder name, you may end up with two plugin entries; keep only the **r2-cloud-backup** folder and delete any duplicate (e.g. an old `r2-wordpress-backup` folder) to avoid the menu not showing.
+3. Activate the plugin again.
 
 == Frequently Asked Questions ==
 
@@ -51,6 +57,9 @@ A full backup includes a SQL dump of the database and a ZIP of the site files (b
 R2 free tier includes 10 GB storage and 1 million Class A (write) and 10 million Class B (read) operations per month. For small to medium sites with a few backups, this is usually sufficient.
 
 == Upgrade Notice ==
+
+= 1.0.6 =
+Fixes admin menu not showing when R2/count fails; resilient to Throwable. WP_Error handling in R2 requests. Docs: manual update and r2-cloud-backup folder name.
 
 = 1.0.5 =
 WordPress Plugin Directory compliance: support sidebar uses link only (no third-party scripts or images). Readme tested up to 6.7. Docs for plugin submission.
@@ -79,6 +88,12 @@ Initial release. Full site backups to Cloudflare R2 with export, import, schedul
 If this plugin helps you, you can support its development: [Buy Me a Coffee](https://buymeacoffee.com/stephanbarker)
 
 == Changelog ==
+
+= 1.0.6 =
+* Fix: Admin menu no longer disappears when backup count or R2 request fails; catch Throwable in get_r2_backup_count and add_menu_pages.
+* R2 client: handle wp_remote_request WP_Error in request() to avoid warnings.
+* Readme: Installation and new "Manual update" section; plugin folder name r2-cloud-backup.
+* Docs: SUBMIT-TO-WORDPRESS-ORG.md section "Actualización manual" and stable tag note.
 
 = 1.0.5 =
 * Plugin Directory compliance: admin support sidebar no longer loads external scripts or images; text link only (guideline 8). Button styling for text link.

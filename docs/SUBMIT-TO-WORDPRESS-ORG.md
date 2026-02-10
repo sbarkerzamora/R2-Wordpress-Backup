@@ -24,13 +24,25 @@ rm -rf dist-build
 
 ## 2. Revisión del readme.txt
 
-- **Stable tag:** 1.0.4 (debe coincidir con la versión en el archivo principal del plugin).
+- **Stable tag:** debe coincidir con la versión en el archivo principal del plugin (p. ej. 1.0.5).
 - **Tags:** 5 (máximo permitido): backup, cloudflare, s3, database, restore.
 - **Donate link:** Enlace directo, sin afiliados ni redirecciones.
 - **Tested up to:** 6.7 (actualiza cuando pruebes con una versión más nueva de WordPress).
 - Sin enlaces de afiliados ni spam; texto orientado a usuarios.
 
 Si cambias la versión del plugin, actualiza también **Stable tag** en `readme.txt` y la cabecera del plugin.
+
+---
+
+## 2b. Actualización manual (usuarios)
+
+El nombre de la carpeta del plugin es **r2-cloud-backup**. Para actualizar manualmente:
+
+1. Desactivar el plugin.
+2. Reemplazar la carpeta `wp-content/plugins/r2-cloud-backup/` por la nueva versión, o subir un zip cuyo contenido se descomprima en esa misma carpeta (el zip debe contener una carpeta llamada `r2-cloud-backup` con los archivos dentro).
+3. Reactivar el plugin.
+
+Si el menú del plugin no aparece tras una actualización, comprobar que no existan dos carpetas (p. ej. `r2-cloud-backup` y `r2-wordpress-backup`); dejar solo `r2-cloud-backup` y reactivar.
 
 ---
 

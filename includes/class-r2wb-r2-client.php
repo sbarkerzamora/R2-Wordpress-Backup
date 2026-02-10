@@ -124,13 +124,18 @@ class R2WB_R2_Client {
 		}
 
 		$response = wp_remote_request( $url, $args );
-		$code = wp_remote_retrieve_response_code( $response );
-		$body_res = wp_remote_retrieve_body( $response );
+
+		if ( is_wp_error( $response ) ) {
+			return array( 'code' => 0, 'body' => '', 'headers' => array() );
+		}
+
+		$code       = wp_remote_retrieve_response_code( $response );
+		$body_res   = wp_remote_retrieve_body( $response );
 		$headers_res = wp_remote_retrieve_headers( $response );
 
 		return array(
 			'code'    => (int) $code,
-			'body'   => $body_res,
+			'body'    => $body_res,
 			'headers' => is_object( $headers_res ) ? (array) $headers_res : $headers_res,
 		);
 	}

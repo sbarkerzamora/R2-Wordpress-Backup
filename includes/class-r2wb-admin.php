@@ -29,8 +29,16 @@ class R2WB_Admin {
 			return;
 		}
 
-		$backup_count = $this->get_r2_backup_count();
-		$menu_title  = __( 'R2 Cloud Backup', 'r2-wordpress-backup' );
+		try {
+			$backup_count = $this->get_r2_backup_count();
+		} catch ( \Throwable $e ) {
+			$backup_count = 0;
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				error_log( 'R2 Cloud Backup: menu badge count failed – ' . $e->getMessage() );
+			}
+		}
+
+		$menu_title = __( 'R2 Cloud Backup', 'r2-wordpress-backup' );
 		if ( $backup_count > 0 ) {
 			$menu_title .= ' <span class="awaiting-mod count-' . absint( $backup_count ) . '"><span class="backup-count">' . number_format_i18n( $backup_count ) . '</span></span>';
 		}
@@ -117,7 +125,10 @@ class R2WB_Admin {
 			$count  = $client->list_backups_count();
 			set_transient( $cache_key, $count, MINUTE_IN_SECONDS * 5 );
 			return $count;
-		} catch ( Exception $e ) {
+		} catch ( \Throwable $e ) {
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				error_log( 'R2 Cloud Backup: get_r2_backup_count – ' . $e->getMessage() );
+			}
 			return 0;
 		}
 	}
