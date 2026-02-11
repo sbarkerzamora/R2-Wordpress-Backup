@@ -27,15 +27,15 @@ class R2WB_Scheduler {
 	public static function add_cron_intervals( $schedules ) {
 		$schedules['r2wb_daily'] = array(
 			'interval' => DAY_IN_SECONDS,
-			'display'  => __( 'Once daily', 'r2-wordpress-backup' ),
+			'display'  => __( 'Once daily', 'r2-cloud-backup' ),
 		);
 		$schedules['r2wb_weekly'] = array(
 			'interval' => WEEK_IN_SECONDS,
-			'display'  => __( 'Once weekly', 'r2-wordpress-backup' ),
+			'display'  => __( 'Once weekly', 'r2-cloud-backup' ),
 		);
 		$schedules['r2wb_monthly'] = array(
 			'interval' => 30 * DAY_IN_SECONDS,
-			'display'  => __( 'Once monthly', 'r2-wordpress-backup' ),
+			'display'  => __( 'Once monthly', 'r2-cloud-backup' ),
 		);
 		return $schedules;
 	}

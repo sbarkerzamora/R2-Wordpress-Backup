@@ -7,14 +7,14 @@ El paquete para enviar está en:
 **`dist/r2-cloud-backup.zip`**
 
 Contenido del zip:
-- Carpeta **r2-cloud-backup/** con: `r2-wordpress-backup.php`, `uninstall.php`, `readme.txt`, `LICENSE`, `includes/`, `admin/`, `languages/`.
+- Carpeta **r2-cloud-backup/** con: `r2-cloud-backup.php`, `uninstall.php`, `readme.txt`, `LICENSE`, `includes/`, `admin/`, `languages/`.
 - No incluye: `docs/`, `.git`, ni archivos de desarrollo.
 
 Para regenerar el zip desde la raíz del repo:
 
 ```bash
 mkdir -p dist-build/r2-cloud-backup
-cp r2-wordpress-backup.php uninstall.php readme.txt LICENSE dist-build/r2-cloud-backup/
+cp r2-cloud-backup.php uninstall.php readme.txt LICENSE dist-build/r2-cloud-backup/
 cp -r includes admin languages dist-build/r2-cloud-backup/
 (cd dist-build && zip -r ../dist/r2-cloud-backup.zip r2-cloud-backup)
 rm -rf dist-build

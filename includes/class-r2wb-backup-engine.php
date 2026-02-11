@@ -31,7 +31,7 @@ class R2WB_Backup_Engine {
 		$client = new R2WB_R2_Client();
 		$config = $this->get_config();
 		if ( $config === null ) {
-			return new WP_Error( 'r2wb_not_configured', __( 'R2 credentials not configured.', 'r2-wordpress-backup' ) );
+			return new WP_Error( 'r2wb_not_configured', __( 'R2 credentials not configured.', 'r2-cloud-backup' ) );
 		}
 
 		$upload_dir = wp_upload_dir();
@@ -46,7 +46,7 @@ class R2WB_Backup_Engine {
 
 		$zip = new ZipArchive();
 		if ( $zip->open( $zip_path, ZipArchive::CREATE | ZipArchive::OVERWRITE ) !== true ) {
-			return new WP_Error( 'r2wb_zip_failed', __( 'Could not create ZIP file.', 'r2-wordpress-backup' ) );
+			return new WP_Error( 'r2wb_zip_failed', __( 'Could not create ZIP file.', 'r2-cloud-backup' ) );
 		}
 
 		// 1. Database dump
@@ -104,7 +104,7 @@ class R2WB_Backup_Engine {
 		$exclude_tables = $this->get_exclude_tables();
 		$tables = $wpdb->get_col( 'SHOW TABLES' );
 		if ( empty( $tables ) ) {
-			return new WP_Error( 'r2wb_db_export', __( 'No tables found.', 'r2-wordpress-backup' ) );
+			return new WP_Error( 'r2wb_db_export', __( 'No tables found.', 'r2-cloud-backup' ) );
 		}
 
 		$out = "-- R2 Cloud Backup - Database dump\n";

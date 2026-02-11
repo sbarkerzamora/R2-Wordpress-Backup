@@ -26,7 +26,7 @@ class R2WB_Admin {
 	 */
 	public function add_menu_pages() {
 		// Register unconditionally; WordPress filters by capability when displaying and on page access.
-		$menu_title = (string) __( 'R2 Cloud Backup', 'r2-wordpress-backup' );
+		$menu_title = (string) __( 'R2 Cloud Backup', 'r2-cloud-backup' );
 
 		add_menu_page(
 			$menu_title,
@@ -39,12 +39,12 @@ class R2WB_Admin {
 		);
 
 		$slug = self::MENU_SLUG;
-		add_submenu_page( $slug, (string) __( 'Export', 'r2-wordpress-backup' ), (string) __( 'Export', 'r2-wordpress-backup' ), 'manage_options', 'r2wb-export', array( $this, 'render_export_page' ) );
-		add_submenu_page( $slug, (string) __( 'Import', 'r2-wordpress-backup' ), (string) __( 'Import', 'r2-wordpress-backup' ), 'manage_options', 'r2wb-import', array( $this, 'render_import_page' ) );
-		add_submenu_page( $slug, (string) __( 'Backups', 'r2-wordpress-backup' ), (string) __( 'Backups', 'r2-wordpress-backup' ), 'manage_options', $slug, array( $this, 'render_backups_page' ) );
-		add_submenu_page( $slug, (string) __( 'Reset Hub', 'r2-wordpress-backup' ), (string) __( 'Reset Hub', 'r2-wordpress-backup' ), 'manage_options', 'r2wb-reset', array( $this, 'render_reset_page' ) );
-		add_submenu_page( $slug, (string) __( 'Schedules', 'r2-wordpress-backup' ), (string) __( 'Schedules', 'r2-wordpress-backup' ), 'manage_options', 'r2wb-schedules', array( $this, 'render_schedules_page' ) );
-		add_submenu_page( $slug, (string) __( 'Settings', 'r2-wordpress-backup' ), (string) __( 'Settings', 'r2-wordpress-backup' ), 'manage_options', 'r2wb-settings', array( $this, 'render_settings_page' ) );
+		add_submenu_page( $slug, (string) __( 'Export', 'r2-cloud-backup' ), (string) __( 'Export', 'r2-cloud-backup' ), 'manage_options', 'r2wb-export', array( $this, 'render_export_page' ) );
+		add_submenu_page( $slug, (string) __( 'Import', 'r2-cloud-backup' ), (string) __( 'Import', 'r2-cloud-backup' ), 'manage_options', 'r2wb-import', array( $this, 'render_import_page' ) );
+		add_submenu_page( $slug, (string) __( 'Backups', 'r2-cloud-backup' ), (string) __( 'Backups', 'r2-cloud-backup' ), 'manage_options', $slug, array( $this, 'render_backups_page' ) );
+		add_submenu_page( $slug, (string) __( 'Reset Hub', 'r2-cloud-backup' ), (string) __( 'Reset Hub', 'r2-cloud-backup' ), 'manage_options', 'r2wb-reset', array( $this, 'render_reset_page' ) );
+		add_submenu_page( $slug, (string) __( 'Schedules', 'r2-cloud-backup' ), (string) __( 'Schedules', 'r2-cloud-backup' ), 'manage_options', 'r2wb-schedules', array( $this, 'render_schedules_page' ) );
+		add_submenu_page( $slug, (string) __( 'Settings', 'r2-cloud-backup' ), (string) __( 'Settings', 'r2-cloud-backup' ), 'manage_options', 'r2wb-settings', array( $this, 'render_settings_page' ) );
 	}
 
 	/**
@@ -62,7 +62,7 @@ class R2WB_Admin {
 		if ( $dismissed ) {
 			return;
 		}
-		$message = __( 'R2 Cloud Backup: For the menu and updates to work correctly, the plugin folder must be named <strong>r2-cloud-backup</strong>. You may have another copy in a different folder; deactivate one and keep only <code>wp-content/plugins/r2-cloud-backup/</code>.', 'r2-wordpress-backup' );
+		$message = __( 'R2 Cloud Backup: For the menu and updates to work correctly, the plugin folder must be named <strong>r2-cloud-backup</strong>. You may have another copy in a different folder; deactivate one and keep only <code>wp-content/plugins/r2-cloud-backup/</code>.', 'r2-cloud-backup' );
 		add_action( 'admin_notices', function () use ( $message ) {
 			$nonce = wp_create_nonce( 'r2wb_dismiss_folder_notice' );
 			echo '<div class="notice notice-warning is-dismissible r2wb-folder-notice" data-nonce="' . esc_attr( $nonce ) . '"><p>' . wp_kses( $message, array( 'strong' => array(), 'code' => array() ) ) . '</p></div>';
@@ -120,7 +120,7 @@ class R2WB_Admin {
 			return $links;
 		}
 		$url = admin_url( 'admin.php?page=r2wb-settings' );
-		$links[] = '<a href="' . esc_url( $url ) . '">' . esc_html__( 'Settings', 'r2-wordpress-backup' ) . '</a>';
+		$links[] = '<a href="' . esc_url( $url ) . '">' . esc_html__( 'Settings', 'r2-cloud-backup' ) . '</a>';
 		return $links;
 	}
 
@@ -130,7 +130,11 @@ class R2WB_Admin {
 	 * @param string $hook_suffix Current admin page hook.
 	 */
 	public function enqueue_assets( $hook_suffix ) {
-		if ( strpos( (string) $hook_suffix, 'r2wb' ) === false ) {
+		$on_r2wb_page = ( strpos( (string) $hook_suffix, 'r2wb' ) !== false );
+		if ( ! $on_r2wb_page && isset( $_GET['page'] ) && is_string( $_GET['page'] ) && strpos( $_GET['page'], 'r2wb' ) === 0 ) {
+			$on_r2wb_page = true;
+		}
+		if ( ! $on_r2wb_page ) {
 			return;
 		}
 
@@ -164,27 +168,59 @@ class R2WB_Admin {
 		wp_localize_script(
 			'r2wb-admin',
 			'r2wbAdmin',
-			array(
-				'ajaxUrl' => admin_url( 'admin-ajax.php' ),
-				'nonce'   => wp_create_nonce( 'r2wb_admin' ),
-				'strings' => array(
-					'confirmReset'   => __( 'Reset plugin options and schedules? R2 credentials will be kept.', 'r2-wordpress-backup' ),
-					'confirmDelete'  => __( 'Delete this backup from R2? This cannot be undone.', 'r2-wordpress-backup' ),
-					'confirmRestore' => __( 'Restore this site from the selected backup? Current database and files will be replaced. This cannot be undone.', 'r2-wordpress-backup' ),
-					'startingBackup' => __( 'Starting backup…', 'r2-wordpress-backup' ),
-					'backupSuccess'  => __( 'Backup completed successfully.', 'r2-wordpress-backup' ),
-					'backupFailed'   => __( 'Backup failed.', 'r2-wordpress-backup' ),
-					'restoring'      => __( 'Restoring…', 'r2-wordpress-backup' ),
-					'restoreSuccess' => __( 'Restore completed.', 'r2-wordpress-backup' ),
-					'restoreFailed'  => __( 'Restore failed.', 'r2-wordpress-backup' ),
-					'requestFailed'  => __( 'Request failed.', 'r2-wordpress-backup' ),
-					'connectionOk'  => __( 'Connection successful.', 'r2-wordpress-backup' ),
-					'connectionFailed' => __( 'Connection failed.', 'r2-wordpress-backup' ),
-					'resetFailed'    => __( 'Reset failed.', 'r2-wordpress-backup' ),
-					'deleteFailed'   => __( 'Delete failed.', 'r2-wordpress-backup' ),
-				),
-			)
+			$this->get_r2wb_admin_script_data()
 		);
+	}
+
+	/**
+	 * Data for r2wbAdmin (AJAX URL, nonce, strings). Shared by wp_localize_script and inline fallback.
+	 *
+	 * @return array
+	 */
+	private function get_r2wb_admin_script_data() {
+		return array(
+			'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+			'nonce'   => wp_create_nonce( 'r2wb_admin' ),
+			'strings' => array(
+				'confirmReset'   => __( 'Reset plugin options and schedules? R2 credentials will be kept.', 'r2-cloud-backup' ),
+				'confirmDelete'  => __( 'Delete this backup from R2? This cannot be undone.', 'r2-cloud-backup' ),
+				'confirmRestore' => __( 'Restore this site from the selected backup? Current database and files will be replaced. This cannot be undone.', 'r2-cloud-backup' ),
+				'startingBackup' => __( 'Starting backup…', 'r2-cloud-backup' ),
+				'backupSuccess'  => __( 'Backup completed successfully.', 'r2-cloud-backup' ),
+				'backupFailed'   => __( 'Backup failed.', 'r2-cloud-backup' ),
+				'restoring'      => __( 'Restoring…', 'r2-cloud-backup' ),
+				'restoreSuccess' => __( 'Restore completed.', 'r2-cloud-backup' ),
+				'restoreFailed'  => __( 'Restore failed.', 'r2-cloud-backup' ),
+				'requestFailed'  => __( 'Request failed.', 'r2-cloud-backup' ),
+				'connectionOk'  => __( 'Connection successful.', 'r2-cloud-backup' ),
+				'connectionFailed' => __( 'Connection failed.', 'r2-cloud-backup' ),
+				'resetFailed'    => __( 'Reset failed.', 'r2-cloud-backup' ),
+				'deleteFailed'   => __( 'Delete failed.', 'r2-cloud-backup' ),
+			),
+		);
+	}
+
+	/**
+	 * Inline script so r2wbAdmin is always available before admin.js runs (fixes buttons not working).
+	 */
+	public function print_r2wb_admin_script() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+		$screen = get_current_screen();
+		$on_r2wb = $screen && strpos( (string) $screen->id, 'r2wb' ) !== false;
+		if ( ! $on_r2wb && isset( $_GET['page'] ) && is_string( $_GET['page'] ) && strpos( $_GET['page'], 'r2wb' ) === 0 ) {
+			$on_r2wb = true;
+		}
+		if ( ! $on_r2wb ) {
+			return;
+		}
+		$data = $this->get_r2wb_admin_script_data();
+		$json = wp_json_encode( $data );
+		if ( $json === false ) {
+			return;
+		}
+		echo '<script>window.r2wbAdmin = window.r2wbAdmin || ' . $json . ';</script>' . "\n";
 	}
 
 	/**
@@ -234,15 +270,22 @@ class R2WB_Admin {
 	 * Link only; no third-party scripts or images (Plugin Directory guideline 8).
 	 */
 	public function render_support_sidebar() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
 		$screen = get_current_screen();
-		if ( ! $screen || strpos( (string) $screen->id, 'r2wb' ) === false || ! current_user_can( 'manage_options' ) ) {
+		$on_r2wb = $screen && strpos( (string) $screen->id, 'r2wb' ) !== false;
+		if ( ! $on_r2wb && isset( $_GET['page'] ) && is_string( $_GET['page'] ) && strpos( $_GET['page'], 'r2wb' ) === 0 ) {
+			$on_r2wb = true;
+		}
+		if ( ! $on_r2wb ) {
 			return;
 		}
 
 		$bmc_url        = 'https://buymeacoffee.com/stephanbarker';
-		$sidebar_title  = __( 'Support the project', 'r2-wordpress-backup' );
-		$sidebar_text   = __( 'If you find this plugin useful, consider supporting its development.', 'r2-wordpress-backup' );
-		$sidebar_button = __( 'Buy me a coffee', 'r2-wordpress-backup' );
+		$sidebar_title  = __( 'Support the project', 'r2-cloud-backup' );
+		$sidebar_text   = __( 'If you find this plugin useful, consider supporting its development.', 'r2-cloud-backup' );
+		$sidebar_button = __( 'Buy me a coffee', 'r2-cloud-backup' );
 		?>
 		<aside class="r2wb-sidebar" id="r2wb-support-sidebar" role="complementary">
 			<h3 class="r2wb-sidebar__title"><?php echo esc_html( $sidebar_title ); ?></h3>
@@ -271,7 +314,7 @@ class R2WB_Admin {
 		add_settings_error(
 			'r2wb_schedule',
 			'saved',
-			__( 'Schedule saved.', 'r2-wordpress-backup' ),
+			__( 'Schedule saved.', 'r2-cloud-backup' ),
 			'success'
 		);
 	}
@@ -307,7 +350,7 @@ class R2WB_Admin {
 		add_settings_error(
 			'r2wb_settings',
 			'saved',
-			__( 'Settings saved.', 'r2-wordpress-backup' ),
+			__( 'Settings saved.', 'r2-cloud-backup' ),
 			'success'
 		);
 	}
@@ -318,14 +361,14 @@ class R2WB_Admin {
 	public function ajax_test_connection() {
 		check_ajax_referer( 'r2wb_admin', 'nonce' );
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'r2-wordpress-backup' ) ) );
+			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'r2-cloud-backup' ) ) );
 		}
 		$client = new R2WB_R2_Client();
 		$result = $client->test_connection();
 		if ( is_wp_error( $result ) ) {
 			wp_send_json_error( array( 'message' => $result->get_error_message() ) );
 		}
-		wp_send_json_success( array( 'message' => __( 'Connection successful.', 'r2-wordpress-backup' ) ) );
+		wp_send_json_success( array( 'message' => __( 'Connection successful.', 'r2-cloud-backup' ) ) );
 	}
 
 	/**
@@ -334,7 +377,7 @@ class R2WB_Admin {
 	public function ajax_start_backup() {
 		check_ajax_referer( 'r2wb_admin', 'nonce' );
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'r2-wordpress-backup' ) ) );
+			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'r2-cloud-backup' ) ) );
 		}
 		$engine = new R2WB_Backup_Engine();
 		$result = $engine->run_backup();
@@ -342,7 +385,7 @@ class R2WB_Admin {
 			wp_send_json_error( array( 'message' => $result->get_error_message() ) );
 		}
 		delete_transient( 'r2wb_backup_count' );
-		wp_send_json_success( array( 'message' => __( 'Backup completed and uploaded to R2.', 'r2-wordpress-backup' ) ) );
+		wp_send_json_success( array( 'message' => __( 'Backup completed and uploaded to R2.', 'r2-cloud-backup' ) ) );
 	}
 
 	/**
@@ -351,7 +394,7 @@ class R2WB_Admin {
 	public function ajax_reset_options() {
 		check_ajax_referer( 'r2wb_admin', 'nonce' );
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'r2-wordpress-backup' ) ) );
+			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'r2-cloud-backup' ) ) );
 		}
 		R2WB_Deactivator::deactivate();
 		$options = array( 'r2wb_retention_count', 'r2wb_exclude_paths', 'r2wb_exclude_tables', 'r2wb_schedule_interval', 'r2wb_schedule_next' );
@@ -359,7 +402,7 @@ class R2WB_Admin {
 			delete_option( $opt );
 		}
 		delete_transient( 'r2wb_backup_count' );
-		wp_send_json_success( array( 'message' => __( 'Options and schedules have been reset.', 'r2-wordpress-backup' ) ) );
+		wp_send_json_success( array( 'message' => __( 'Options and schedules have been reset.', 'r2-cloud-backup' ) ) );
 	}
 
 	/**
@@ -368,11 +411,11 @@ class R2WB_Admin {
 	public function ajax_download_backup() {
 		check_ajax_referer( 'r2wb_admin', 'nonce' );
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( esc_html__( 'Permission denied.', 'r2-wordpress-backup' ), 403 );
+			wp_die( esc_html__( 'Permission denied.', 'r2-cloud-backup' ), 403 );
 		}
 		$key = isset( $_GET['key'] ) ? sanitize_text_field( wp_unslash( $_GET['key'] ) ) : '';
 		if ( $key === '' ) {
-			wp_die( esc_html__( 'Invalid key.', 'r2-wordpress-backup' ), 400 );
+			wp_die( esc_html__( 'Invalid key.', 'r2-cloud-backup' ), 400 );
 		}
 		$client = new R2WB_R2_Client();
 		$upload_dir = wp_upload_dir();
@@ -396,11 +439,11 @@ class R2WB_Admin {
 	public function ajax_delete_backup() {
 		check_ajax_referer( 'r2wb_admin', 'nonce' );
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'r2-wordpress-backup' ) ) );
+			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'r2-cloud-backup' ) ) );
 		}
 		$key = isset( $_POST['key'] ) ? sanitize_text_field( wp_unslash( $_POST['key'] ) ) : '';
 		if ( $key === '' ) {
-			wp_send_json_error( array( 'message' => __( 'Invalid key.', 'r2-wordpress-backup' ) ) );
+			wp_send_json_error( array( 'message' => __( 'Invalid key.', 'r2-cloud-backup' ) ) );
 		}
 		$client = new R2WB_R2_Client();
 		$result = $client->delete( $key );
@@ -408,7 +451,7 @@ class R2WB_Admin {
 			wp_send_json_error( array( 'message' => $result->get_error_message() ) );
 		}
 		delete_transient( 'r2wb_backup_count' );
-		wp_send_json_success( array( 'message' => __( 'Backup deleted from R2.', 'r2-wordpress-backup' ) ) );
+		wp_send_json_success( array( 'message' => __( 'Backup deleted from R2.', 'r2-cloud-backup' ) ) );
 	}
 
 	/**
@@ -417,17 +460,17 @@ class R2WB_Admin {
 	public function ajax_restore_backup() {
 		check_ajax_referer( 'r2wb_admin', 'nonce' );
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'r2-wordpress-backup' ) ) );
+			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'r2-cloud-backup' ) ) );
 		}
 		$key = isset( $_POST['key'] ) ? sanitize_text_field( wp_unslash( $_POST['key'] ) ) : '';
 		if ( $key === '' ) {
-			wp_send_json_error( array( 'message' => __( 'Invalid key.', 'r2-wordpress-backup' ) ) );
+			wp_send_json_error( array( 'message' => __( 'Invalid key.', 'r2-cloud-backup' ) ) );
 		}
 		$restore = new R2WB_Restore();
 		$result = $restore->restore( $key );
 		if ( is_wp_error( $result ) ) {
 			wp_send_json_error( array( 'message' => $result->get_error_message() ) );
 		}
-		wp_send_json_success( array( 'message' => __( 'Restore completed.', 'r2-wordpress-backup' ) ) );
+		wp_send_json_success( array( 'message' => __( 'Restore completed.', 'r2-cloud-backup' ) ) );
 	}
 }

@@ -31,7 +31,7 @@ You need a Cloudflare account and an R2 bucket with API tokens (Access Key ID an
 
 == Installation ==
 
-1. Upload the plugin folder to `wp-content/plugins/` or install via WordPress admin. The plugin folder name must be **r2-cloud-backup** (so the path is `wp-content/plugins/r2-cloud-backup/` with `r2-wordpress-backup.php` inside).
+1. Upload the plugin folder to `wp-content/plugins/` or install via WordPress admin. The plugin folder name must be **r2-cloud-backup** (so the path is `wp-content/plugins/r2-cloud-backup/` with `r2-cloud-backup.php` inside).
 2. Activate the plugin.
 3. Go to R2 Cloud Backup > Settings and enter your Cloudflare R2 credentials (Account ID, Access Key ID, Secret Access Key, Bucket name).
 4. Use Export to create a backup or Schedules to set up automatic backups.

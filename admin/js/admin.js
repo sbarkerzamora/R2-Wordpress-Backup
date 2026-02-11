@@ -7,7 +7,14 @@
 (function ($) {
 	'use strict';
 
-	var strings = (typeof r2wbAdmin !== 'undefined' && r2wbAdmin.strings) ? r2wbAdmin.strings : {};
+	if (typeof r2wbAdmin === 'undefined' || !r2wbAdmin.ajaxUrl || !r2wbAdmin.nonce) {
+		if (typeof console !== 'undefined' && console.error) {
+			console.error('R2 Cloud Backup: r2wbAdmin not loaded. Check that you are on an R2 Cloud Backup admin page.');
+		}
+		return;
+	}
+
+	var strings = (r2wbAdmin.strings) ? r2wbAdmin.strings : {};
 	function s(key, fallback) {
 		return strings[key] || fallback || key;
 	}

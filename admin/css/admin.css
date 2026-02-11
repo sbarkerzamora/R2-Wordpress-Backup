@@ -184,7 +184,7 @@
 .r2wb-sidebar {
 	position: fixed;
 	right: 0;
-	top: 46px;
+	top: 32px;
 	width: 280px;
 	padding: 1.25rem;
 	background: #fff;
@@ -238,7 +238,7 @@
 	outline-offset: 2px;
 }
 
-@media screen and (max-width: 1280px) {
+@media screen and (max-width: 960px) {
 	.r2wb-sidebar {
 		display: none;
 	}

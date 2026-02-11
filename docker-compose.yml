@@ -24,10 +24,16 @@ services:
       WORDPRESS_DB_NAME: wordpress
       WORDPRESS_DB_USER: wordpress
       WORDPRESS_DB_PASSWORD: wordpress
+      # Debug: errores en wp-content/debug.log. Ver: docker compose exec wordpress tail -f /var/www/html/wp-content/debug.log
       WORDPRESS_DEBUG: "1"
+      WORDPRESS_CONFIG_EXTRA: |
+        define( 'WP_DEBUG', true );
+        define( 'WP_DEBUG_LOG', true );
+        define( 'WP_DEBUG_DISPLAY', false );
+        @ini_set( 'display_errors', 0 );
     volumes:
       # Monta este repositorio como plugin dentro de WordPress.
-      - ./:/var/www/html/wp-content/plugins/r2-wordpress-backup
+      - ./:/var/www/html/wp-content/plugins/r2-cloud-backup
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin

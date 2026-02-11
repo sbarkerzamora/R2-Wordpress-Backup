@@ -38,7 +38,7 @@ class R2WB_Restore {
 		$zip = new ZipArchive();
 		if ( $zip->open( $zip_path ) !== true ) {
 			$this->rmdir_recursive( $temp_dir );
-			return new WP_Error( 'r2wb_restore_zip', __( 'Could not open backup file.', 'r2-wordpress-backup' ) );
+			return new WP_Error( 'r2wb_restore_zip', __( 'Could not open backup file.', 'r2-cloud-backup' ) );
 		}
 
 		$extract_dir = $temp_dir . '/extract';
@@ -80,13 +80,13 @@ class R2WB_Restore {
 		global $wpdb;
 		$sql = file_get_contents( $sql_path );
 		if ( $sql === false ) {
-			return new WP_Error( 'r2wb_restore_read', __( 'Could not read database file.', 'r2-wordpress-backup' ) );
+			return new WP_Error( 'r2wb_restore_read', __( 'Could not read database file.', 'r2-cloud-backup' ) );
 		}
 		// Prefer mysqli::multi_query when available for accurate replay of the dump.
 		if ( $wpdb->dbh instanceof mysqli ) {
 			$mysqli = $wpdb->dbh;
 			if ( ! $mysqli->multi_query( $sql ) ) {
-				return new WP_Error( 'r2wb_restore_db', __( 'Database error during restore: ', 'r2-wordpress-backup' ) . $mysqli->error );
+				return new WP_Error( 'r2wb_restore_db', __( 'Database error during restore: ', 'r2-cloud-backup' ) . $mysqli->error );
 			}
 			do {
 				if ( $result = $mysqli->store_result() ) { // phpcs:ignore WordPress.NamingConventions.ValidVariableName.VariableNotSnakeCase
@@ -104,7 +104,7 @@ class R2WB_Restore {
 			}
 			$wpdb->query( $stmt );
 			if ( $wpdb->last_error ) {
-				return new WP_Error( 'r2wb_restore_db', __( 'Database error during restore: ', 'r2-wordpress-backup' ) . $wpdb->last_error );
+				return new WP_Error( 'r2wb_restore_db', __( 'Database error during restore: ', 'r2-cloud-backup' ) . $wpdb->last_error );
 			}
 		}
 		return true;

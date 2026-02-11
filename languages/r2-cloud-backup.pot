@@ -1,5 +1,6 @@
 # Copyright (C) 2024 R2 Cloud Backup
 # This file is distributed under the same license as the plugin.
+# Text domain: r2-cloud-backup
 msgid ""
 msgstr ""
 "Project-Id-Version: R2 Cloud Backup 1.0.0\n"

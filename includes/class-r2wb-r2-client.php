@@ -200,7 +200,7 @@ class R2WB_R2_Client {
 	public function test_connection() {
 		$config = $this->get_config();
 		if ( $config === null ) {
-			return new WP_Error( 'r2wb_not_configured', __( 'R2 credentials not configured. Save Account ID, Access Key, Secret Key, and Bucket.', 'r2-wordpress-backup' ) );
+			return new WP_Error( 'r2wb_not_configured', __( 'R2 credentials not configured. Save Account ID, Access Key, Secret Key, and Bucket.', 'r2-cloud-backup' ) );
 		}
 		$bucket = $config['bucket'];
 		$path = '/' . $bucket;
@@ -210,13 +210,12 @@ class R2WB_R2_Client {
 			return true;
 		}
 		if ( $res['code'] === 403 ) {
-			return new WP_Error( 'r2wb_access_denied', __( 'Access denied. Check your R2 API token and bucket name.', 'r2-wordpress-backup' ) );
+			return new WP_Error( 'r2wb_access_denied', __( 'Access denied. Check your R2 API token and bucket name.', 'r2-cloud-backup' ) );
 		}
 		if ( $res['code'] === 404 ) {
-			return new WP_Error( 'r2wb_bucket_not_found', __( 'Bucket not found.', 'r2-wordpress-backup' ) );
+			return new WP_Error( 'r2wb_bucket_not_found', __( 'Bucket not found.', 'r2-cloud-backup' ) );
 		}
-		$msg = wp_remote_retrieve_response_message( array( 'code' => $res['code'], 'body' => $res['body'] ) );
-		return new WP_Error( 'r2wb_connection_failed', sprintf( __( 'Connection failed (HTTP %d).', 'r2-wordpress-backup' ), $res['code'] ) );
+		return new WP_Error( 'r2wb_connection_failed', sprintf( __( 'Connection failed (HTTP %d).', 'r2-cloud-backup' ), $res['code'] ) );
 	}
 
 	/**
@@ -228,21 +227,21 @@ class R2WB_R2_Client {
 	 */
 	public function upload( $local_path, $remote_key ) {
 		if ( ! is_readable( $local_path ) ) {
-			return new WP_Error( 'r2wb_file_unreadable', __( 'File not found or not readable.', 'r2-wordpress-backup' ) );
+			return new WP_Error( 'r2wb_file_unreadable', __( 'File not found or not readable.', 'r2-cloud-backup' ) );
 		}
 		$config = $this->get_config();
 		if ( $config === null ) {
-			return new WP_Error( 'r2wb_not_configured', __( 'R2 credentials not configured.', 'r2-wordpress-backup' ) );
+			return new WP_Error( 'r2wb_not_configured', __( 'R2 credentials not configured.', 'r2-cloud-backup' ) );
 		}
 		$filesize = filesize( $local_path );
 		if ( $filesize === false ) {
-			return new WP_Error( 'r2wb_file_read_failed', __( 'Failed to read file size.', 'r2-wordpress-backup' ) );
+			return new WP_Error( 'r2wb_file_read_failed', __( 'Failed to read file size.', 'r2-cloud-backup' ) );
 		}
 		$res = $this->request_put_stream( $local_path, (int) $filesize, $remote_key, $config );
 		if ( $res['code'] === 200 ) {
 			return true;
 		}
-		return new WP_Error( 'r2wb_upload_failed', sprintf( __( 'Upload failed (HTTP %d).', 'r2-wordpress-backup' ), $res['code'] ) );
+		return new WP_Error( 'r2wb_upload_failed', sprintf( __( 'Upload failed (HTTP %d).', 'r2-cloud-backup' ), $res['code'] ) );
 	}
 
 	/**
@@ -321,20 +320,20 @@ class R2WB_R2_Client {
 	 */
 	public function download( $remote_key, $local_path ) {
 		if ( strpos( (string) $remote_key, (string) $this->prefix ) !== 0 ) {
-			return new WP_Error( 'r2wb_invalid_key', __( 'Invalid backup key.', 'r2-wordpress-backup' ) );
+			return new WP_Error( 'r2wb_invalid_key', __( 'Invalid backup key.', 'r2-cloud-backup' ) );
 		}
 		$config = $this->get_config();
 		if ( $config === null ) {
-			return new WP_Error( 'r2wb_not_configured', __( 'R2 credentials not configured.', 'r2-wordpress-backup' ) );
+			return new WP_Error( 'r2wb_not_configured', __( 'R2 credentials not configured.', 'r2-cloud-backup' ) );
 		}
 		$bucket = $config['bucket'];
 		$path = '/' . $bucket . '/' . self::encode_key( $remote_key );
 		$res = $this->request( 'GET', $path, '', '', $config );
 		if ( $res['code'] !== 200 ) {
-			return new WP_Error( 'r2wb_download_failed', sprintf( __( 'Download failed (HTTP %d).', 'r2-wordpress-backup' ), $res['code'] ) );
+			return new WP_Error( 'r2wb_download_failed', sprintf( __( 'Download failed (HTTP %d).', 'r2-cloud-backup' ), $res['code'] ) );
 		}
 		if ( file_put_contents( $local_path, $res['body'] ) === false ) {
-			return new WP_Error( 'r2wb_write_failed', __( 'Failed to write file.', 'r2-wordpress-backup' ) );
+			return new WP_Error( 'r2wb_write_failed', __( 'Failed to write file.', 'r2-cloud-backup' ) );
 		}
 		return true;
 	}
@@ -347,11 +346,11 @@ class R2WB_R2_Client {
 	 */
 	public function delete( $remote_key ) {
 		if ( strpos( (string) $remote_key, (string) $this->prefix ) !== 0 ) {
-			return new WP_Error( 'r2wb_invalid_key', __( 'Invalid backup key.', 'r2-wordpress-backup' ) );
+			return new WP_Error( 'r2wb_invalid_key', __( 'Invalid backup key.', 'r2-cloud-backup' ) );
 		}
 		$config = $this->get_config();
 		if ( $config === null ) {
-			return new WP_Error( 'r2wb_not_configured', __( 'R2 credentials not configured.', 'r2-wordpress-backup' ) );
+			return new WP_Error( 'r2wb_not_configured', __( 'R2 credentials not configured.', 'r2-cloud-backup' ) );
 		}
 		$bucket = $config['bucket'];
 		$path = '/' . $bucket . '/' . self::encode_key( $remote_key );
@@ -359,7 +358,7 @@ class R2WB_R2_Client {
 		if ( $res['code'] === 204 || $res['code'] === 200 ) {
 			return true;
 		}
-		return new WP_Error( 'r2wb_delete_failed', sprintf( __( 'Delete failed (HTTP %d).', 'r2-wordpress-backup' ), $res['code'] ) );
+		return new WP_Error( 'r2wb_delete_failed', sprintf( __( 'Delete failed (HTTP %d).', 'r2-cloud-backup' ), $res['code'] ) );
 	}
 
 	/**

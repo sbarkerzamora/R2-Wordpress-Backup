@@ -10,7 +10,7 @@
  * Author URI: https://stephanbarker.com
  * License: GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain: r2-wordpress-backup
+ * Text Domain: r2-cloud-backup
  * Domain Path: /languages
  *
  * @package R2_WordPress_Backup
@@ -27,7 +27,7 @@ add_filter( 'plugin_action_links_' . $r2wb_this_basename, function ( $links ) {
 		return $links;
 	}
 	$url = admin_url( 'admin.php?page=r2wb-settings' );
-	$links[] = '<a href="' . esc_url( $url ) . '">' . esc_html__( 'Settings', 'r2-wordpress-backup' ) . '</a>';
+	$links[] = '<a href="' . esc_url( $url ) . '">' . esc_html__( 'Settings', 'r2-cloud-backup' ) . '</a>';
 	return $links;
 }, 10, 1 );
 
@@ -73,7 +73,7 @@ if ( ! isset( $GLOBALS['r2wb_plugins_notice_done'] ) ) {
 			echo wp_kses(
 				sprintf(
 					/* translators: %s: link to settings page */
-					__( 'To open configuration, click <a href="%s">Settings</a> next to "Deactivate" in the R2 Cloud Backup row below.', 'r2-wordpress-backup' ),
+					__( 'To open configuration, click <a href="%s">Settings</a> next to "Deactivate" in the R2 Cloud Backup row below.', 'r2-cloud-backup' ),
 					esc_url( $url )
 				),
 				array( 'a' => array( 'href' => array() ) )
@@ -86,6 +86,26 @@ if ( ! isset( $GLOBALS['r2wb_plugins_notice_done'] ) ) {
 // Prevent fatal error if another copy of the plugin is loaded (e.g. old version in a second folder).
 if ( function_exists( 'r2wb_run' ) ) {
 	return;
+}
+
+// Optional: show a small diagnostic when WP_DEBUG is on (confirms plugin loaded).
+if ( defined( 'WP_DEBUG' ) && WP_DEBUG && is_admin() ) {
+	add_action( 'admin_notices', function () {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+		$page = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : '';
+		if ( strpos( $page, 'r2wb' ) !== 0 ) {
+			return;
+		}
+		$dir_ok = defined( 'R2WB_PLUGIN_DIR' ) && is_readable( R2WB_PLUGIN_DIR . 'admin/js/admin.js' );
+		$url_ok = defined( 'R2WB_PLUGIN_URL' ) && R2WB_PLUGIN_URL !== '';
+		echo '<div class="notice notice-info"><p><strong>R2 Cloud Backup</strong> ';
+		echo esc_html( defined( 'R2WB_VERSION' ) ? 'v' . R2WB_VERSION : '' );
+		echo ' — ';
+		echo $dir_ok && $url_ok ? esc_html__( 'Plugin loaded. Path and URL OK.', 'r2-cloud-backup' ) : esc_html__( 'Plugin loaded. Check path/URL if assets fail.', 'r2-cloud-backup' );
+		echo '</p></div>';
+	}, 1 );
 }
 
 define( 'R2WB_VERSION', '1.0.7' );
@@ -112,6 +132,9 @@ function r2wb_run() {
 	} catch ( \Throwable $e ) {
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 			error_log( 'R2 Cloud Backup: ' . $e->getMessage() );
+			if ( defined( 'WP_DEBUG_LOG' ) && WP_DEBUG_LOG ) {
+				error_log( 'R2 Cloud Backup stack: ' . $e->getTraceAsString() );
+			}
 		}
 		add_action( 'admin_notices', function () use ( $e ) {
 			if ( current_user_can( 'manage_options' ) ) {
